@@ -15,7 +15,7 @@ Memoize functions or methods.
 
 ## Features
 
-* Allows you to set a cache provider (PSR-6 compliant only)
+* Allows you to set a cache provider (PSR-16 compliant only),
 * Allows you to set a "TTL" (time to live).
 
 ## Installation
