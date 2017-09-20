@@ -76,7 +76,7 @@ trait MemoizeTrait
             }
         }
 
-        $result = call_user_func_array($func, $parameters);
+        $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
 
         if (($cache = self::getMemoizeCacheProvider())) {
             $cache->set($cacheid, $result, $ttl);

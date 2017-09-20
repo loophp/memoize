@@ -3,7 +3,7 @@
     "description": "Memoize functions with a trait or by extending an object.",
     "license": "GPL",
     "homepage": "https://github.com/drupol/memoize",
-    "keywords": ["memoize"],
+    "keywords": ["memoize", "cache"],
     "support": {
         "source": "https://github.com/drupol/memoize",
         "forum": "https://github.com/drupol/memoize/issues",
@@ -38,12 +38,9 @@
     "suggest": {
         "symfony/cache": "Memoize requires this package to get it working."
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "scripts": {
-        "phpspec": "./bin/phpspec run",
-        "grumphp": "./bin/grumphp run",
-        "scrutinizer": "./bin/ocular code-coverage:upload --format=php-clover build/coverage.xml"
+        "phpspec": "./vendor/bin/phpspec run",
+        "grumphp": "./vendor/bin/grumphp run",
+        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage.xml"
     }
 }
