@@ -16,13 +16,19 @@ class MemoizeSpec extends ObjectBehavior
 
     public function it_can_memoize_a_closure()
     {
-        $closure = function($second = 2) {sleep($second); return microtime();};
+        $closure = function ($second = 2) {
+            sleep($second);
+            return microtime();
+        };
         $this->memoize($closure)->shouldBe($this->memoize($closure));
     }
 
     public function it_can_use_another_cache_object()
     {
-        $closure = function($second = 2) {sleep($second); return microtime();};
+        $closure = function ($second = 2) {
+            sleep($second);
+            return microtime();
+        };
 
         $cache = new FilesystemCache();
         $this::setMemoizeCacheProvider($cache);
@@ -33,11 +39,13 @@ class MemoizeSpec extends ObjectBehavior
 
     public function it_can_clear_cache()
     {
-        $closure = function($second = 2) {sleep($second); return microtime();};
+        $closure = function ($second = 2) {
+            sleep($second);
+            return microtime();
+        };
         $result = $this->memoize($closure);
         $this::clearMemoizeCacheProvider();
 
         $this->memoize($closure)->shouldNotBe($result);
     }
-
 }
