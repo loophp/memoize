@@ -1,6 +1,7 @@
 [![Build Status](https://www.travis-ci.org/drupol/memoize.svg?branch=master)](https://www.travis-ci.org/drupol/memoize)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/memoize/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/drupol/memoize/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
+[![StyleCI](https://styleci.io/repos/104074893/shield?branch=master)](https://styleci.io/repos/104074893)
 [![Latest Stable Version](https://poser.pugx.org/drupol/memoize/v/stable)](https://packagist.org/packages/drupol/memoize)
 [![Total Downloads](https://poser.pugx.org/drupol/memoize/downloads)](https://packagist.org/packages/drupol/memoize)
 [![License](https://poser.pugx.org/drupol/memoize/license)](https://packagist.org/packages/drupol/memoize)
