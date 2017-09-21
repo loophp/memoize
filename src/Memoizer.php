@@ -14,7 +14,7 @@ class Memoizer extends Memoize
      *
      * @var null|\ReflectionFunction
      */
-    private $closure = null;
+    private $callable = null;
 
     /**
      * The time to live.
@@ -26,14 +26,14 @@ class Memoizer extends Memoize
     /**
      * Memoizer constructor.
      *
-     * @param callable $closure
+     * @param callable $callable
      *   The callable.
      * @param int $ttl
      *   The time to live.
      */
-    public function __construct($closure, $ttl = null)
+    public function __construct(Callable $callable, $ttl = null)
     {
-        $this->closure = new \ReflectionFunction($closure);
+        $this->callable = new \ReflectionFunction($callable);
         $this->ttl = $ttl;
     }
 
@@ -42,6 +42,6 @@ class Memoizer extends Memoize
      */
     public function __invoke()
     {
-        return $this->memoize($this->closure->getClosure(), func_get_args(), $this->ttl);
+        return $this->memoize($this->callable->getClosure(), func_get_args(), $this->ttl);
     }
 }

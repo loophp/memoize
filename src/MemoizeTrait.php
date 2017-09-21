@@ -80,7 +80,16 @@ trait MemoizeTrait
         return self::getMemoizeCacheProvider()->get($cacheid);
     }
 
-    protected function hash(array $arguments)
+    /**
+     * Return a sha1 hash of an array.
+     *
+     * @param array $arguments
+     *   The array of arguments.
+     *
+     * @return string
+     *   The sha1 hash.
+     */
+    protected function hash(array $arguments = [])
     {
         return sha1(
             serialize(
