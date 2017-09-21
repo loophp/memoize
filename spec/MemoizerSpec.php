@@ -9,18 +9,19 @@ class MemoizerSpec extends ObjectBehavior
 {
     public function let()
     {
-        $closure = function() {
+        $closure = function () {
             return uniqid();
         };
         $this->beConstructedWith($closure);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Memoizer::class);
     }
 
-    function it_can_memoize_a_closure() {
+    public function it_can_memoize_a_closure()
+    {
         $args = [new \StdClass, [uniqid()], uniqid()];
 
         $this->__invoke()->shouldBe($this->__invoke());
