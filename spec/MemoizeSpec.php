@@ -21,6 +21,20 @@ class MemoizeSpec extends ObjectBehavior
             return microtime();
         };
         $this->memoize($closure)->shouldBe($this->memoize($closure));
+
+        $closure = function () {
+            return new \stdClass();
+        };
+        $this->memoize($closure)->shouldBe($this->memoize($closure));
+
+        $object = new \stdClass();
+        $array = [uniqid()];
+        $value = uniqid();
+
+        $closure = function ($object, $array, $value) {
+            return new \stdClass();
+        };
+        $this->memoize($closure, [$object, $array, $value])->shouldBe($this->memoize($closure, [$object, $array, $value]));
     }
 
     public function it_can_use_another_cache_object()

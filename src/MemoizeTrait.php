@@ -17,6 +17,8 @@ trait MemoizeTrait
      */
     protected static $cache;
 
+    private $once = [];
+
     /**
      * Set the cache.
      *
@@ -35,7 +37,7 @@ trait MemoizeTrait
     public static function getMemoizeCacheProvider()
     {
         if (!(self::$cache instanceof CacheInterface)) {
-            self::setMemoizeCacheProvider(new ArrayCache());
+            self::setMemoizeCacheProvider(new ArrayCache(null, false));
         }
 
         return self::$cache;
@@ -68,20 +70,35 @@ trait MemoizeTrait
      */
     public function memoize(\Closure $func, array $parameters = [], $ttl = null)
     {
-        $cacheid = spl_object_hash($func).sha1(json_encode($parameters));
+        $cacheid = $this->hash(func_get_args());
 
-        if (($cache = self::getMemoizeCacheProvider())) {
-            if ($data = $cache->get($cacheid)) {
-                return $data;
-            }
+        if (is_null(self::getMemoizeCacheProvider()->get($cacheid))) {
+            $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
+            self::getMemoizeCacheProvider()->set($cacheid, $result, $ttl);
         }
 
-        $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
+        return self::getMemoizeCacheProvider()->get($cacheid);
+    }
 
-        if (($cache = self::getMemoizeCacheProvider())) {
-            $cache->set($cacheid, $result, $ttl);
-        }
+    protected function hash(array $arguments)
+    {
+        return sha1(
+            serialize(
+                array_map(
+                    function ($value) {
+                        if (is_array($value)) {
+                            return $this->hash($value);
+                        }
 
-        return $result;
+                        if (is_object($value)) {
+                            return spl_object_hash($value);
+                        }
+
+                        return $value;
+                    },
+                    $arguments
+                )
+            )
+        );
     }
 }

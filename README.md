@@ -76,6 +76,22 @@ MemoizeTrait::getMemoizeCacheProvider();
 MemoizeTrait::clearMemoizeCacheProvider();
 ```
 
+## Technical notes
+
+During the tests and investigations doing this library, I noticed that you must disable the serialization on the default `ArrayCache()` cache object.
+
+This is why it is initialized as such: `new ArrayCache(null, false);`
+
+If you use a cache object, make sure that you can disable the serialization or you won't be able to memoize methods that returns objects.
+
+For example, the `FilesystemCache()` cache is unable to disable serialization and if you try to memoize functions like this example, it won't work, it's better to use the `ArrayCache()`.
+
+```php
+$function = function() {
+  return new stdClass;
+};
+```
+
 ## Contributing
 
 Feel free to contribute to this library by sending Github pull requests. I'm quite reactive :-)
