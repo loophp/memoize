@@ -31,7 +31,7 @@ class Memoizer extends Memoize
      * @param int $ttl
      *   The time to live.
      */
-    public function __construct(Callable $callable, $ttl = null)
+    public function __construct(callable $callable, $ttl = null)
     {
         $this->callable = new \ReflectionFunction($callable);
         $this->ttl = $ttl;
