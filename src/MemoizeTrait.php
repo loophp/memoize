@@ -17,8 +17,6 @@ trait MemoizeTrait
      */
     protected static $cache;
 
-    private $once = [];
-
     /**
      * Set the cache.
      *
