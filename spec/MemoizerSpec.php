@@ -24,9 +24,9 @@ class MemoizerSpec extends ObjectBehavior
     {
         $args = [new \StdClass, [uniqid()], uniqid()];
 
-        $this->__invoke()->shouldBe($this->__invoke());
-        $this->__invoke(1)->shouldBe($this->__invoke(1));
-        $this->__invoke($args)->shouldBe($this->__invoke($args));
-        $this->__invoke(1)->shouldNotBe($this->__invoke(2));
+        $this()->shouldBe($this());
+        $this(1)->shouldBe($this(1));
+        $this($args)->shouldBe($this($args));
+        $this(1)->shouldNotBe($this(2));
     }
 }
