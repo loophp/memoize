@@ -12,10 +12,11 @@
 
 Memoize functions or methods.
 
-> In computing, memoization or memoisation is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
+> In computing, memoization is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 
 ## Features
 
+* Provides a Trait, a Memoize object and a Memoizer helper,
 * Allows you to set a cache provider (PSR-16 compliant only),
 * Allows you to set a "TTL" (time to live).
 
@@ -25,7 +26,7 @@ Memoize functions or methods.
 
 ## Usage
 
-Using the trait:
+Using the **trait**:
 
 ```php
 include 'vendor/autoload.php';
@@ -40,13 +41,52 @@ $myObject = new myObject();
 
 $closure = function($second = 5) {
     sleep($second);
-    return microtime(true);
+    return uniqid();
 };
 
-echo $myObject->memoize($closure, [1]) . "\n"; // 1505827080.6258
-echo $myObject->memoize($closure, [1]) . "\n"; // 1505827080.6258
-echo $myObject->memoize($closure, [2]) . "\n"; // 1505827110.982
-echo $myObject->memoize($closure, [2]) . "\n"; // 1505827110.982
+echo $myObject->memoize($closure, [1]) . "\n"; // 59c41136b38e9
+echo $myObject->memoize($closure, [1]) . "\n"; // 59c41136b38e9
+echo $myObject->memoize($closure, [2]) . "\n"; // 59c41138c4765
+echo $myObject->memoize($closure, [2]) . "\n"; // 59c41138c4765
+```
+
+Using the **Memoize class**:
+
+```php
+include 'vendor/autoload.php';
+
+class myObject extends \drupol\Memoize\Memoize {
+}
+
+$myObject = new myObject();
+
+$closure = function($second = 5) {
+    sleep($second);
+    return uniqid();
+};
+
+echo $myObject->memoize($closure, [1]) . "\n"; // 59c411a2c6566
+echo $myObject->memoize($closure, [1]) . "\n"; // 59c411a2c6566
+echo $myObject->memoize($closure, [2]) . "\n"; // 59c411a4c8bb1
+echo $myObject->memoize($closure, [2]) . "\n"; // 59c411a4c8bb1
+```
+
+Using the **Memoizer class**:
+
+```php
+include 'vendor/autoload.php';
+
+$closure = function($second = 5) {
+    sleep($second);
+    return uniqid();
+};
+
+$memoizer = new \drupol\Memoize\Memoizer($closure);
+
+echo $memoizer(1) . "\n"; // 59c4123661459
+echo $memoizer(1) . "\n"; // 59c4123661459
+echo $memoizer(2) . "\n"; // 59c4123862a4e
+echo $memoizer(2) . "\n"; // 59c4123862a4e
 ```
 
 ## API
@@ -74,6 +114,27 @@ MemoizeTrait::getMemoizeCacheProvider();
  * Clear the cache.
  */
 MemoizeTrait::clearMemoizeCacheProvider();
+```
+
+```php
+/**
+ * Memoize a closure.
+ *
+ * @param \Closure $func
+ *   The closure.
+ * @param array $parameters
+ *   The closure's parameters.
+ * @param null|int|DateInterval $ttl
+ *   Optional. The TTL value of this item. If no value is sent and
+ *   the driver supports TTL then the library may set a default value
+ *   for it or let the driver take care of that.
+ *
+ * @return mixed|null
+ *   The return of the closure.
+ *
+ * @throws \Psr\SimpleCache\InvalidArgumentException
+ */
+MemoizeTrait::memoize(\Closure $func, array $parameters = [], $ttl = null);
 ```
 
 ## Technical notes
