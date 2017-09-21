@@ -33,7 +33,7 @@ class Memoizer extends Memoize
      */
     public function __construct(callable $callable, $ttl = null)
     {
-        $this->callable = new \ReflectionFunction($callable);
+        $this->callable = $callable;
         $this->ttl = $ttl;
     }
 
@@ -42,6 +42,6 @@ class Memoizer extends Memoize
      */
     public function __invoke()
     {
-        return $this->memoize($this->callable->getClosure(), func_get_args(), $this->ttl);
+        return $this->memoize($this->callable, func_get_args(), $this->ttl);
     }
 }
