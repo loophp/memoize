@@ -20,12 +20,12 @@ class MemoizeSpec extends ObjectBehavior
             sleep($second);
             return microtime();
         };
-        $this->memoize($closure)->shouldBe($this->memoize($closure));
+        $this->memoize($closure, [], 'id')->shouldBe($this->memoize($closure, [], 'id'));
 
         $closure = function () {
             return new \stdClass();
         };
-        $this->memoize($closure)->shouldBe($this->memoize($closure));
+        $this->memoize($closure, [], 'id')->shouldBe($this->memoize($closure, [], 'id'));
 
         $object = new \stdClass();
         $array = [uniqid()];
@@ -34,7 +34,7 @@ class MemoizeSpec extends ObjectBehavior
         $closure = function ($object, $array, $value) {
             return new \stdClass();
         };
-        $this->memoize($closure, [$object, $array, $value])->shouldBe($this->memoize($closure, [$object, $array, $value]));
+        $this->memoize($closure, [$object, $array, $value], 'id')->shouldBe($this->memoize($closure, [$object, $array, $value], 'id'));
     }
 
     public function it_can_use_another_cache_object()
@@ -48,7 +48,7 @@ class MemoizeSpec extends ObjectBehavior
         $this::setMemoizeCacheProvider($cache);
         $this::getMemoizeCacheProvider()->shouldBe($cache);
 
-        $this->memoize($closure)->shouldBe($this->memoize($closure));
+        $this->memoize($closure, [], 'id')->shouldBe($this->memoize($closure, [], 'id'));
     }
 
     public function it_can_clear_cache()
@@ -57,9 +57,9 @@ class MemoizeSpec extends ObjectBehavior
             sleep($second);
             return microtime();
         };
-        $result = $this->memoize($closure);
+        $result = $this->memoize($closure, [], 'id');
         $this::clearMemoizeCacheProvider();
 
-        $this->memoize($closure)->shouldNotBe($result);
+        $this->memoize($closure, [], 'id')->shouldNotBe($result);
     }
 }

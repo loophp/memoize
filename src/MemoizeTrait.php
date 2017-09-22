@@ -56,6 +56,8 @@ trait MemoizeTrait
      *   The closure.
      * @param array $parameters
      *   The closure's parameters.
+     * @param string $cacheId
+     *   The cache ID to use to store or retrieve the cached result.
      * @param null|int|DateInterval $ttl
      *   Optional. The TTL value of this item. If no value is sent and
      *   the driver supports TTL then the library may set a default value
@@ -66,22 +68,24 @@ trait MemoizeTrait
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function memoize(\Closure $func, array $parameters = [], $ttl = null)
+    public function memoize(\Closure $func, array $parameters = [], $cacheId = null, $ttl = null)
     {
-        $cacheid = $this->hash(func_get_args());
-
-        if (is_null(self::getMemoizeCacheProvider()->get($cacheid))) {
-            $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
-            self::getMemoizeCacheProvider()->set($cacheid, $result, $ttl);
+        if (null === $cacheId || !is_string($cacheId)) {
+            $cacheId = $this->hash(func_get_args());
         }
 
-        return self::getMemoizeCacheProvider()->get($cacheid);
+        if (is_null(self::getMemoizeCacheProvider()->get($cacheId))) {
+            $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
+            self::getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
+        }
+
+        return self::getMemoizeCacheProvider()->get($cacheId);
     }
 
     /**
      * Return a sha1 hash of an array.
      *
-     * @param array $arguments
+     * @param mixed[] $arguments
      *   The array of arguments.
      *
      * @return string
