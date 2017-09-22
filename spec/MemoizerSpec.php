@@ -38,8 +38,6 @@ class MemoizerSpec extends ObjectBehavior
         $this(1)->shouldBe($this(1));
         $this(1)->shouldBe($this(1));
         $this(2)->shouldBe($this(2));
-        $this(1)->shouldNotBe($this(1));
-        $this(2)->shouldNotBe($this(3));
         $this($args)->shouldBe($this($args));
     }
 }
