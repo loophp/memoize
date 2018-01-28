@@ -1,7 +1,7 @@
 {
     "name": "drupol/memoize",
     "description": "Memoize functions with a trait or by extending an object.",
-    "license": "GPL",
+    "license": "GPL-3.0-only",
     "homepage": "https://github.com/drupol/memoize",
     "keywords": ["memoize", "cache"],
     "support": {
