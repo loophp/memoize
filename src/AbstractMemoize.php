@@ -4,10 +4,8 @@ namespace drupol\Memoize;
 
 /**
  * Class AbstractMemoize.
- *
- * @package drupol\Memoize
  */
-abstract class AbstractMemoize
+abstract class AbstractMemoize implements MemoizeInterface
 {
     use MemoizeTrait;
 }

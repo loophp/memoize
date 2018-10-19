@@ -7,8 +7,6 @@ use Symfony\Component\Cache\Simple\ArrayCache;
 
 /**
  * Trait MemoizeTrait.
- *
- * @package drupol\Memoize
  */
 trait MemoizeTrait
 {
@@ -18,9 +16,7 @@ trait MemoizeTrait
     protected static $cache;
 
     /**
-     * Set the cache.
-     *
-     * @param \Psr\SimpleCache\CacheInterface $cache
+     * {@inheritdoc}
      */
     public static function setMemoizeCacheProvider(CacheInterface $cache)
     {
@@ -28,21 +24,19 @@ trait MemoizeTrait
     }
 
     /**
-     * Get the cache.
-     *
-     * @return \Psr\SimpleCache\CacheInterface
+     * {@inheritdoc}
      */
     public static function getMemoizeCacheProvider()
     {
         if (!(self::$cache instanceof CacheInterface)) {
-            self::setMemoizeCacheProvider(new ArrayCache(null, false));
+            self::setMemoizeCacheProvider(new ArrayCache(0, false));
         }
 
         return self::$cache;
     }
 
     /**
-     * Clear the cache.
+     * {@inheritdoc}
      */
     public static function clearMemoizeCacheProvider()
     {
@@ -50,33 +44,24 @@ trait MemoizeTrait
     }
 
     /**
-     * Memoize a closure.
-     *
-     * @param \Closure $func
-     *   The closure.
-     * @param array $parameters
-     *   The closure's parameters.
-     * @param string $cacheId
-     *   The cache ID to use to store or retrieve the cached result.
-     * @param null|int|DateInterval $ttl
-     *   Optional. The TTL value of this item. If no value is sent and
-     *   the driver supports TTL then the library may set a default value
-     *   for it or let the driver take care of that.
-     *
-     * @return mixed|null
-     *   The return of the closure.
-     *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * {@inheritdoc}
      */
-    public function memoize(\Closure $func, array $parameters = [], $cacheId = null, $ttl = null)
+    public function memoize(callable $callable, array $parameters = [], $cacheId = null, $ttl = null)
     {
         if (null === $cacheId || !is_string($cacheId)) {
             $cacheId = $this->hash(func_get_args());
         }
 
         if (is_null(self::getMemoizeCacheProvider()->get($cacheId))) {
-            $result = call_user_func_array($func->bindTo($this, get_called_class()), $parameters);
+            if ($callable instanceof \Closure) {
+                $callable = $callable->bindTo($this, get_called_class());
+            }
+
+            $result = $callable(...$parameters);
+
             self::getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
+
+            return $result;
         }
 
         return self::getMemoizeCacheProvider()->get($cacheId);

@@ -4,40 +4,38 @@ namespace drupol\Memoize;
 
 /**
  * Class Memoizer.
- *
- * @package drupol\Memoize
  */
 class Memoizer extends Memoize
 {
     /**
      * The callable.
      *
-     * @var null|\ReflectionFunction
+     * @var callable
      */
-    private $callable = null;
+    private $callable;
 
     /**
      * The time to live.
      *
-     * @var int
+     * @var int|null
      */
-    private $ttl = null;
+    private $ttl;
 
     /**
      * The cache ID.
      *
-     * @var string
+     * @var string|null
      */
-    private $cacheId = null;
+    private $cacheId;
 
     /**
      * Memoizer constructor.
      *
      * @param callable $callable
      *   The callable.
-     * @param string $cacheId
+     * @param string|null $cacheId
      *   The cache ID.
-     * @param int $ttl
+     * @param int|null $ttl
      *   The time to live.
      */
     public function __construct(callable $callable, $cacheId = null, $ttl = null)
@@ -65,7 +63,7 @@ class Memoizer extends Memoize
     /**
      * Get the cache ID.
      *
-     * @return string
+     * @return string|null
      *   The cache ID.
      */
     private function getCacheId()

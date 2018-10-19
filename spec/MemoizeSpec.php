@@ -37,6 +37,13 @@ class MemoizeSpec extends ObjectBehavior
         $this->memoize($closure, [$object, $array, $value], 'id')->shouldBe($this->memoize($closure, [$object, $array, $value], 'id'));
     }
 
+    public function it_can_memoize_a_callable()
+    {
+        $callable = '\uniqid';
+
+        $this->memoize($callable, [], 'id')->shouldBe($this->memoize($callable, [], 'id'));
+    }
+
     public function it_can_use_another_cache_object()
     {
         $closure = function ($second = 2) {
