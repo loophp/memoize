@@ -16,9 +16,9 @@
         "role": "Author"
     }],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">= 7.1",
         "psr/simple-cache": "^1.0",
-        "symfony/cache": "^3.3"
+        "symfony/cache": "^3 || ^4"
     },
     "autoload": {
         "psr-4": {
@@ -29,7 +29,6 @@
         "codacy/coverage": "^1.4",
         "drupol/phpspec-annotation": "^1.0",
         "friendsofphp/php-cs-fixer": "^2.10",
-        "infection/infection": "^0.10.5",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "leanphp/phpspec-code-coverage": "^4",
         "maglnet/composer-require-checker": "^1.1",
@@ -44,10 +43,10 @@
         "sebastian/phpcpd": "^4.0",
         "sensiolabs/security-checker": "^4.1",
         "squizlabs/php_codesniffer": "^3",
-        "symfony/console": "^3.0"
+        "infection/infection": "^0.10.5"
     },
     "suggest": {
-        "symfony/cache": "Memoize requires this package to get it working."
+        "symfony/cache": "drupol/memoize requires this package to get it working."
     },
     "scripts": {
         "phpspec": "./vendor/bin/phpspec run",
