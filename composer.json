@@ -4,6 +4,7 @@
     "license": "GPL-3.0-only",
     "homepage": "https://github.com/drupol/memoize",
     "keywords": ["memoize", "cache"],
+    "prefer-stable": true,
     "support": {
         "source": "https://github.com/drupol/memoize",
         "forum": "https://github.com/drupol/memoize/issues",
@@ -12,11 +13,12 @@
     "authors": [{
         "name": "Pol Dellaiera",
         "email": "pol.dellaiera@protonmail.com",
-        "homepage": "http://not-a-number.io",
+        "homepage": "https://not-a-number.io",
         "role": "Author"
     }],
     "require": {
         "php": ">= 7.1",
+        "drupol/valuewrapper": "^1",
         "psr/simple-cache": "^1.0",
         "symfony/cache": "^3 || ^4"
     },
@@ -48,9 +50,17 @@
     "suggest": {
         "symfony/cache": "drupol/memoize requires this package to get it working."
     },
+    "config": {
+        "sort-packages": true
+    },
     "scripts": {
+        "apigen": "./vendor/bin/apigen generate src --destination build/docs",
         "phpspec": "./vendor/bin/phpspec run",
         "grumphp": "./vendor/bin/grumphp run",
-        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage.xml"
+        "phpcs": "./vendor/bin/phpcs --ignore=vendor .",
+        "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
+        "infection": "./vendor/bin/infection run -j 10",
+        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml",
+        "bench": "./vendor/bin/phpbench run --report=project --store --precision=3"
     }
 }

@@ -45,5 +45,5 @@ interface MemoizeInterface
      * @return mixed|null
      *   The result of the callable.
      */
-    public function memoize(callable $callable, array $parameters = [], $cacheId = null, $ttl = null);
+    public function memoize(callable $callable, array $parameters = [], string $cacheId = null, $ttl = 0);
 }

@@ -19,7 +19,8 @@ script:
   - composer grumphp
 
 after_success:
-  - composer scrutinizer
+- phpenv config-rm xdebug.ini
+- composer scrutinizer
 
 matrix:
   fast_finish: true

@@ -2,6 +2,7 @@
 
 namespace drupol\Memoize;
 
+use drupol\valuewrapper\ValueWrapper;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Simple\ArrayCache;
 
@@ -16,7 +17,9 @@ trait MemoizeTrait
     protected static $cache;
 
     /**
-     * {@inheritdoc}
+     * Set the cache.
+     *
+     * @param \Psr\SimpleCache\CacheInterface $cache
      */
     public static function setMemoizeCacheProvider(CacheInterface $cache)
     {
@@ -24,7 +27,9 @@ trait MemoizeTrait
     }
 
     /**
-     * {@inheritdoc}
+     * Get the cache.
+     *
+     * @return \Psr\SimpleCache\CacheInterface
      */
     public static function getMemoizeCacheProvider()
     {
@@ -36,7 +41,7 @@ trait MemoizeTrait
     }
 
     /**
-     * {@inheritdoc}
+     * Clear the cache.
      */
     public static function clearMemoizeCacheProvider()
     {
@@ -44,57 +49,47 @@ trait MemoizeTrait
     }
 
     /**
-     * {@inheritdoc}
+     * Memoize a callable.
+     *
+     * @param callable $callable
+     *   The callable.
+     * @param array $parameters
+     *   The callable's parameters.
+     * @param string $cacheId
+     *   The cache ID to use to store or retrieve the cached result.
+     * @param null|int|\DateInterval $ttl
+     *   Optional. The TTL value of this item. If no value is sent and
+     *   the driver supports TTL then the library may set a default value
+     *   for it or let the driver take care of that.
+     *
+     * @return mixed|null
+     *   The result of the callable.
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function memoize(callable $callable, array $parameters = [], $cacheId = null, $ttl = null)
+    public function memoize(callable $callable, array $parameters = [], string $cacheId = null, $ttl = null)
     {
-        if (null === $cacheId || !is_string($cacheId)) {
-            $cacheId = $this->hash(func_get_args());
+        if (null === $cacheId) {
+            $cacheId = (ValueWrapper::create([
+                (ValueWrapper::create($callable))->hash(),
+                (ValueWrapper::create($parameters))->hash(),
+                (ValueWrapper::create($cacheId))->hash(),
+                (ValueWrapper::create($ttl))->hash(),
+            ]))->hash();
         }
 
-        if (is_null(self::getMemoizeCacheProvider()->get($cacheId))) {
-            if ($callable instanceof \Closure) {
-                $callable = $callable->bindTo($this, get_called_class());
-            }
-
-            $result = $callable(...$parameters);
-
-            self::getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
-
-            return $result;
+        if (!is_null(self::getMemoizeCacheProvider()->get($cacheId))) {
+            return self::getMemoizeCacheProvider()->get($cacheId);
         }
 
-        return self::getMemoizeCacheProvider()->get($cacheId);
-    }
+        if ($callable instanceof \Closure) {
+            $callable = $callable->bindTo($this, get_called_class());
+        }
 
-    /**
-     * Return a sha1 hash of an array.
-     *
-     * @param mixed[] $arguments
-     *   The array of arguments.
-     *
-     * @return string
-     *   The sha1 hash.
-     */
-    protected function hash(array $arguments = [])
-    {
-        return sha1(
-            serialize(
-                array_map(
-                    function ($value) {
-                        if (is_array($value)) {
-                            return $this->hash($value);
-                        }
+        $result = $callable(...$parameters);
 
-                        if (is_object($value)) {
-                            return spl_object_hash($value);
-                        }
+        self::getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
 
-                        return $value;
-                    },
-                    $arguments
-                )
-            )
-        );
+        return $result;
     }
 }
