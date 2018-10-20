@@ -24,6 +24,10 @@ Memoize functions or methods.
 
 `composer require drupol/memoize`
 
+You will need to provide a Cache object to the library in order to get it working.
+
+The tests are using `symfony/cache` but you are free to use any other library implementing the cache interface (Psr\SimpleCache\CacheInterface) PSR-16.
+
 ## Usage
 
 Using the **trait**:
@@ -31,13 +35,18 @@ Using the **trait**:
 ```php
 include 'vendor/autoload.php';
 
-use drupol\Memoize\MemoizeTrait;
+use drupol\memoize\MemoizeTrait;
+use drupol\memoize\MemoizeTrait;
+use Symfony\Component\Cache\Simple\ArrayCache;
 
 class myObject {
     use MemoizeTrait;
 }
 
 $myObject = new myObject();
+$cache = new ArrayCache(0, false);
+
+$myObject::setMemoizeCacheProvider($cache);
 
 $closure = function($second = 5) {
     sleep($second);
@@ -55,10 +64,13 @@ Using the **Memoize class**:
 ```php
 include 'vendor/autoload.php';
 
-class myObject extends \drupol\Memoize\Memoize {
+class myObject extends \drupol\memoize\Memoize {
 }
 
 $myObject = new myObject();
+$cache = new ArrayCache(0, false);
+
+$myObject::setMemoizeCacheProvider($cache);
 
 $closure = function($second = 5) {
     sleep($second);
@@ -81,7 +93,10 @@ $closure = function($second = 5) {
     return uniqid();
 };
 
-$memoizer = new \drupol\Memoize\Memoizer($closure);
+$memoizer = new \drupol\memoize\Memoizer($closure);
+$cache = new ArrayCache(0, false);
+
+$memoizer::setMemoizeCacheProvider($cache);
 
 echo $memoizer(1) . "\n"; // 59c4123661459
 echo $memoizer(1) . "\n"; // 59c4123661459
@@ -141,7 +156,7 @@ MemoizeTrait::memoize(\Closure $func, array $parameters = [], $ttl = null);
 
 During the tests and investigations doing this library, I noticed that you must disable the serialization on the default `ArrayCache()` cache object.
 
-This is why it is initialized as such: `new ArrayCache(null, false);`
+This is why it is initialized as such: `new ArrayCache(0, false);`
 
 If you use a cache object, make sure that you can disable the serialization or you won't be able to memoize methods that returns objects.
 

@@ -1,10 +1,9 @@
 <?php
 
-namespace drupol\Memoize;
+namespace drupol\memoize;
 
 use drupol\valuewrapper\ValueWrapper;
 use Psr\SimpleCache\CacheInterface;
-use Symfony\Component\Cache\Simple\ArrayCache;
 
 /**
  * Trait MemoizeTrait.
@@ -12,36 +11,32 @@ use Symfony\Component\Cache\Simple\ArrayCache;
 trait MemoizeTrait
 {
     /**
-     * @var CacheInterface
+     * @var CacheInterface|null
      */
     protected static $cache;
 
     /**
-     * Set the cache.
-     *
-     * @param \Psr\SimpleCache\CacheInterface $cache
+     * {@inheritdoc}
      */
-    public static function setMemoizeCacheProvider(CacheInterface $cache)
+    public static function setMemoizeCacheProvider(CacheInterface $cache = null)
     {
         self::$cache = $cache;
     }
 
     /**
-     * Get the cache.
-     *
-     * @return \Psr\SimpleCache\CacheInterface
+     * {@inheritdoc}
      */
     public static function getMemoizeCacheProvider()
     {
         if (!(self::$cache instanceof CacheInterface)) {
-            self::setMemoizeCacheProvider(new ArrayCache(0, false));
+            self::setMemoizeCacheProvider(new NullCache());
         }
 
         return self::$cache;
     }
 
     /**
-     * Clear the cache.
+     * {@inheritdoc}
      */
     public static function clearMemoizeCacheProvider()
     {
@@ -49,23 +44,7 @@ trait MemoizeTrait
     }
 
     /**
-     * Memoize a callable.
-     *
-     * @param callable $callable
-     *   The callable.
-     * @param array $parameters
-     *   The callable's parameters.
-     * @param string $cacheId
-     *   The cache ID to use to store or retrieve the cached result.
-     * @param null|int|\DateInterval $ttl
-     *   Optional. The TTL value of this item. If no value is sent and
-     *   the driver supports TTL then the library may set a default value
-     *   for it or let the driver take care of that.
-     *
-     * @return mixed|null
-     *   The result of the callable.
-     *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * {@inheritdoc}
      */
     public function memoize(callable $callable, array $parameters = [], string $cacheId = null, $ttl = null)
     {
@@ -78,8 +57,8 @@ trait MemoizeTrait
             ]))->hash();
         }
 
-        if (!is_null(self::getMemoizeCacheProvider()->get($cacheId))) {
-            return self::getMemoizeCacheProvider()->get($cacheId);
+        if (null !== ($result = self::getMemoizeCacheProvider()->get($cacheId))) {
+            return $result;
         }
 
         if ($callable instanceof \Closure) {

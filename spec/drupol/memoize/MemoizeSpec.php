@@ -1,14 +1,21 @@
 <?php
 
-namespace spec\drupol\Memoize;
+namespace spec\drupol\memoize;
 
-use drupol\Memoize\Memoize;
+use drupol\memoize\Memoize;
+use drupol\memoize\NullCache;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Cache\Simple\ArrayCache;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class MemoizeSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->setMemoizeCacheProvider(new ArrayCache(0, false));
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(Memoize::class);
@@ -46,10 +53,18 @@ class MemoizeSpec extends ObjectBehavior
 
     public function it_can_use_another_cache_object()
     {
+        $this::setMemoizeCacheProvider();
+
         $closure = function ($second = 2) {
             sleep($second);
             return microtime();
         };
+
+        $this::getMemoizeCacheProvider()
+            ->shouldImplement('Psr\SimpleCache\CacheInterface');
+
+        $this::getMemoizeCacheProvider()
+            ->shouldBeAnInstanceOf('drupol\memoize\NullCache');
 
         $cache = new FilesystemCache();
         $this::setMemoizeCacheProvider($cache);

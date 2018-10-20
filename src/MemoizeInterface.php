@@ -1,6 +1,6 @@
 <?php
 
-namespace drupol\Memoize;
+namespace drupol\memoize;
 
 use Psr\SimpleCache\CacheInterface;
 
@@ -12,14 +12,14 @@ interface MemoizeInterface
     /**
      * Set the cache.
      *
-     * @param \Psr\SimpleCache\CacheInterface $cache
+     * @param \Psr\SimpleCache\CacheInterface|null $cache
      */
-    public static function setMemoizeCacheProvider(CacheInterface $cache);
+    public static function setMemoizeCacheProvider(CacheInterface $cache = null);
 
     /**
      * Get the cache.
      *
-     * @return \Psr\SimpleCache\CacheInterface
+     * @return \Psr\SimpleCache\CacheInterface|null
      */
     public static function getMemoizeCacheProvider();
 

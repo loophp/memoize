@@ -1,6 +1,6 @@
 <?php
 
-namespace drupol\Memoize;
+namespace drupol\memoize;
 
 /**
  * Class AbstractMemoize.

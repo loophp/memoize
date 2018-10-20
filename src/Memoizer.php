@@ -1,6 +1,6 @@
 <?php
 
-namespace drupol\Memoize;
+namespace drupol\memoize;
 
 /**
  * Class Memoizer.
@@ -38,26 +38,11 @@ class Memoizer extends Memoize
      * @param int|null $ttl
      *   The time to live.
      */
-    public function __construct(callable $callable, $cacheId = null, $ttl = null)
+    public function __construct(callable $callable, string $cacheId = null, $ttl = null)
     {
         $this->callable = $callable;
         $this->cacheId = $cacheId;
         $this->ttl = $ttl;
-    }
-
-    /**
-     * Set the cache ID.
-     *
-     * @param string|null $cacheId
-     *   The cache ID.
-     *
-     * @return $this
-     */
-    public function setCacheId($cacheId = null)
-    {
-        $this->cacheId = $cacheId;
-
-        return $this;
     }
 
     /**
@@ -72,10 +57,37 @@ class Memoizer extends Memoize
     }
 
     /**
+     * Get the TTL.
+     *
+     * @return int|null
+     *   The TTL.
+     */
+    private function getTtl()
+    {
+        return $this->ttl;
+    }
+
+    /**
+     * Get the callable.
+     *
+     * @return callable
+     *   The callable.
+     */
+    private function getCallable()
+    {
+        return $this->callable;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function __invoke()
     {
-        return $this->memoize($this->callable, func_get_args(), $this->getCacheId(), $this->ttl);
+        return $this->memoize(
+            $this->getCallable(),
+            func_get_args(),
+            $this->getCacheId(),
+            $this->getTtl()
+        );
     }
 }
