@@ -127,13 +127,6 @@ MemoizeTrait::getMemoizeCacheProvider();
 
 ```php
 /**
- * Clear the cache.
- */
-MemoizeTrait::clearMemoizeCacheProvider();
-```
-
-```php
-/**
  * Memoize a closure.
  *
  * @param \Closure $func
