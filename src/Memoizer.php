@@ -22,38 +22,17 @@ class Memoizer extends Memoize
     private $ttl;
 
     /**
-     * The cache ID.
-     *
-     * @var string|null
-     */
-    private $cacheId;
-
-    /**
      * Memoizer constructor.
      *
      * @param callable $callable
      *   The callable.
-     * @param string|null $cacheId
-     *   The cache ID.
      * @param int|null $ttl
      *   The time to live.
      */
-    public function __construct(callable $callable, string $cacheId = null, $ttl = null)
+    public function __construct(callable $callable, $ttl = null)
     {
         $this->callable = $callable;
-        $this->cacheId = $cacheId;
         $this->ttl = $ttl;
-    }
-
-    /**
-     * Get the cache ID.
-     *
-     * @return string|null
-     *   The cache ID.
-     */
-    private function getCacheId()
-    {
-        return $this->cacheId;
     }
 
     /**
@@ -86,7 +65,6 @@ class Memoizer extends Memoize
         return $this->memoize(
             $this->getCallable(),
             func_get_args(),
-            $this->getCacheId(),
             $this->getTtl()
         );
     }

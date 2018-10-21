@@ -13,7 +13,7 @@ class MemoizerSpec extends ObjectBehavior
         $closure = function () {
             return uniqid();
         };
-        $this->beConstructedWith($closure, 'id');
+        $this->beConstructedWith($closure);
         $this::setMemoizeCacheProvider(new ArrayCache(0, false));
     }
 

@@ -38,27 +38,16 @@ trait MemoizeTrait
     /**
      * {@inheritdoc}
      */
-    public static function clearMemoizeCacheProvider()
+    public function memoize(callable $callable, array $parameters = [], $ttl = null)
     {
-        self::getMemoizeCacheProvider()->clear();
-    }
+        $cacheId = (ValueWrapper::create([
+            (ValueWrapper::create($callable))->hash(),
+            (ValueWrapper::create($parameters))->hash(),
+            (ValueWrapper::create($ttl))->hash(),
+        ]))->hash();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function memoize(callable $callable, array $parameters = [], string $cacheId = null, $ttl = null)
-    {
-        if (null === $cacheId) {
-            $cacheId = (ValueWrapper::create([
-                (ValueWrapper::create($callable))->hash(),
-                (ValueWrapper::create($parameters))->hash(),
-                (ValueWrapper::create($cacheId))->hash(),
-                (ValueWrapper::create($ttl))->hash(),
-            ]))->hash();
-        }
-
-        if (null !== ($result = self::getMemoizeCacheProvider()->get($cacheId))) {
-            return $result;
+        if (self::getMemoizeCacheProvider()->has($cacheId)) {
+            return self::getMemoizeCacheProvider()->get($cacheId);
         }
 
         if ($callable instanceof \Closure) {

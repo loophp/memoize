@@ -24,19 +24,12 @@ interface MemoizeInterface
     public static function getMemoizeCacheProvider();
 
     /**
-     * Clear the cache.
-     */
-    public static function clearMemoizeCacheProvider();
-
-    /**
      * Memoize a callable.
      *
      * @param callable $callable
      *   The callable.
      * @param array $parameters
      *   The callable's parameters.
-     * @param string $cacheId
-     *   The cache ID to use to store or retrieve the cached result.
      * @param null|int|\DateInterval $ttl
      *   Optional. The TTL value of this item. If no value is sent and
      *   the driver supports TTL then the library may set a default value
@@ -45,5 +38,5 @@ interface MemoizeInterface
      * @return mixed|null
      *   The result of the callable.
      */
-    public function memoize(callable $callable, array $parameters = [], string $cacheId = null, $ttl = 0);
+    public function memoize(callable $callable, array $parameters = [], $ttl = null);
 }
