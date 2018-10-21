@@ -37,7 +37,6 @@ Using the **trait**:
 include 'vendor/autoload.php';
 
 use drupol\memoize\MemoizeTrait;
-use drupol\memoize\MemoizeTrait;
 use Symfony\Component\Cache\Simple\ArrayCache;
 
 class myObject {
