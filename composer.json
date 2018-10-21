@@ -3,7 +3,7 @@
     "description": "Memoize functions with a trait or by extending an object.",
     "license": "MIT",
     "homepage": "https://github.com/drupol/memoize",
-    "keywords": ["memoize", "cache"],
+    "keywords": ["memoize", "memoization", "memoizer", "cache"],
     "prefer-stable": true,
     "support": {
         "source": "https://github.com/drupol/memoize",
@@ -45,7 +45,9 @@
         "sebastian/phpcpd": "^4.0",
         "sensiolabs/security-checker": "^4.1",
         "squizlabs/php_codesniffer": "^3",
-        "infection/infection": "^0.10.5"
+        "infection/infection": "^0.10.5",
+        "apigen/apigen": "dev-master",
+        "roave/better-reflection": "dev-master"
     },
     "suggest": {
         "symfony/cache": "drupol/memoize requires this package to get it working."

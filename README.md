@@ -64,6 +64,8 @@ Using the **Memoize class**:
 ```php
 include 'vendor/autoload.php';
 
+use Symfony\Component\Cache\Simple\ArrayCache;
+
 class myObject extends \drupol\memoize\Memoize {
 }
 
@@ -87,6 +89,8 @@ Using the **Memoizer class**:
 
 ```php
 include 'vendor/autoload.php';
+
+use Symfony\Component\Cache\Simple\ArrayCache;
 
 $closure = function($second = 5) {
     sleep($second);
