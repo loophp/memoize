@@ -11,3 +11,5 @@ extensions:
       html: build/coverage
       clover: build/coverage.xml
       php: build/coverage.php
+    blacklist_files:
+      - src/MemoizeTrait.php
