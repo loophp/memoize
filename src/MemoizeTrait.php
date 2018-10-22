@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\memoize;
 
-use drupol\valuewrapper\ValueWrapper;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -11,53 +12,49 @@ use Psr\SimpleCache\CacheInterface;
 trait MemoizeTrait
 {
     /**
-     * @var CacheInterface|null
+     * The cache interface.
+     *
+     * @var CacheInterface
      */
-    protected static $cache;
+    private $memoizeCache;
 
     /**
-     * {@inheritdoc}
+     * Set the cache object.
+     *
+     * @param \Psr\SimpleCache\CacheInterface $cache
+     *   The cache object.
      */
-    public static function setMemoizeCacheProvider(CacheInterface $cache = null)
+    public function setMemoizeCacheProvider(CacheInterface $cache): void
     {
-        self::$cache = $cache;
+        $this->memoizeCache = $cache;
     }
 
     /**
-     * {@inheritdoc}
+     * Get the cache object.
+     *
+     * @return \Psr\SimpleCache\CacheInterface
+     *   The cache object.
      */
-    public static function getMemoizeCacheProvider()
+    public function getMemoizeCacheProvider(): CacheInterface
     {
-        if (!(self::$cache instanceof CacheInterface)) {
-            self::setMemoizeCacheProvider(new NullCache());
-        }
-
-        return self::$cache;
+        return $this->memoizeCache;
     }
 
     /**
-     * {@inheritdoc}
+     * Memoize a callable or a closure.
+     *
+     * @param callable $callable
+     *   The callable or the closure.
+     * @param array $parameters
+     *   The parameters of the callable.
+     * @param int|\DateInterval|null $ttl
+     *   The time to live of the value.
+     *
+     * @return mixed|null
      */
     public function memoize(callable $callable, array $parameters = [], $ttl = null)
     {
-        $cacheId = (ValueWrapper::create([
-            (ValueWrapper::create($callable))->hash(),
-            (ValueWrapper::create($parameters))->hash(),
-            (ValueWrapper::create($ttl))->hash(),
-        ]))->hash();
-
-        if (self::getMemoizeCacheProvider()->has($cacheId)) {
-            return self::getMemoizeCacheProvider()->get($cacheId);
-        }
-
-        if ($callable instanceof \Closure) {
-            $callable = $callable->bindTo($this, get_called_class());
-        }
-
-        $result = $callable(...$parameters);
-
-        self::getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
-
-        return $result;
+        return (new Memoizer($this->getMemoizeCacheProvider()))
+            ->memoize($callable, $parameters, $ttl);
     }
 }

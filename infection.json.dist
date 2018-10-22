@@ -3,6 +3,9 @@
     "source": {
         "directories": [
             "src"
+        ],
+        "excludes": [
+            "MemoizeTrait.php"
         ]
     },
     "logs": {
