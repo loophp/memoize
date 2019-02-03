@@ -13,15 +13,15 @@ interface CallableAwareInterface
      * Get the callable.
      *
      * @return callable
-     *   The callable.
+     *   The callable
      */
-    public function getCallable() : callable;
+    public function getCallable(): callable;
 
     /**
      * Set the callable.
      *
      * @param callable $callable
-     *   The callable.
+     *   The callable
      */
     public function setCallable(callable $callable);
 }

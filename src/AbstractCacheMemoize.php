@@ -22,7 +22,7 @@ abstract class AbstractCacheMemoize extends AbstractExecuteCallableAware impleme
     /**
      * The cache time to live.
      *
-     * @var \DateInterval|int|null
+     * @var null|\DateInterval|int
      */
     private $ttl;
 
@@ -30,24 +30,14 @@ abstract class AbstractCacheMemoize extends AbstractExecuteCallableAware impleme
      * AbstractCacheMemoize constructor.
      *
      * @param \Psr\SimpleCache\CacheInterface $cache
-     *   The cache object.
-     * @param int|\DateInterval|null $ttl
-     *   The cache time to live.
+     *   The cache object
+     * @param null|\DateInterval|int $ttl
+     *   The cache time to live
      */
     public function __construct(CacheInterface $cache, $ttl = null)
     {
         $this->cache = $cache;
         $this->ttl = $ttl;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMemoizeCacheProvider(CacheInterface $cache): CacheMemoizeAwareInterface
-    {
-        $this->cache = $cache;
-
-        return $this;
     }
 
     /**
@@ -64,16 +54,6 @@ abstract class AbstractCacheMemoize extends AbstractExecuteCallableAware impleme
     public function getTtl()
     {
         return $this->ttl;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTtl($ttl): CacheMemoizeAwareInterface
-    {
-        $this->ttl = $ttl;
-
-        return $this;
     }
 
     /**
@@ -101,5 +81,25 @@ abstract class AbstractCacheMemoize extends AbstractExecuteCallableAware impleme
         $this->getMemoizeCacheProvider()->set($cacheId, $result, $ttl);
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMemoizeCacheProvider(CacheInterface $cache): CacheMemoizeAwareInterface
+    {
+        $this->cache = $cache;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTtl($ttl): CacheMemoizeAwareInterface
+    {
+        $this->ttl = $ttl;
+
+        return $this;
     }
 }

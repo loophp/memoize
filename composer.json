@@ -4,7 +4,6 @@
     "license": "MIT",
     "homepage": "https://github.com/drupol/memoize",
     "keywords": ["memoize", "memoization", "memoizer", "cache"],
-    "prefer-stable": true,
     "support": {
         "source": "https://github.com/drupol/memoize",
         "forum": "https://github.com/drupol/memoize/issues",
@@ -28,26 +27,9 @@
     },
     "require-dev": {
         "symfony/cache": "^3 || ^4",
-        "codacy/coverage": "^1.4",
-        "drupol/phpspec-annotation": "^1.0",
-        "friendsofphp/php-cs-fixer": "^2.10",
-        "jakub-onderka/php-parallel-lint": "^1.0",
-        "leanphp/phpspec-code-coverage": "^4",
-        "maglnet/composer-require-checker": "^1.1",
-        "monolog/monolog": "^1.0",
-        "php-http/guzzle6-adapter": "^1.1",
-        "phpmd/phpmd": "^2.6",
-        "phpro/grumphp": "^0.14.0",
-        "phpspec/phpspec": "^4",
-        "phpstan/phpstan": "^0.10.3",
-        "roave/security-advisories": "dev-master",
-        "scrutinizer/ocular": "^1.3",
-        "sebastian/phpcpd": "^4.0",
-        "sensiolabs/security-checker": "^4.1",
-        "squizlabs/php_codesniffer": "^3",
-        "infection/infection": "^0.10.5",
         "apigen/apigen": "dev-master",
-        "roave/better-reflection": "dev-master"
+        "roave/better-reflection": "dev-master",
+        "drupol/php-conventions": "^1"
     },
     "suggest": {
         "symfony/cache": "drupol/memoize requires this package to get it working."
@@ -64,5 +46,10 @@
         "infection": "./vendor/bin/infection run -j 10",
         "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml",
         "bench": "./vendor/bin/phpbench run --report=project --store --precision=3"
+    },
+    "extra": {
+        "grumphp": {
+            "config-default-path": "vendor/drupol/php-conventions/config/php7/grumphp.yml"
+        }
     }
 }

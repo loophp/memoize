@@ -19,21 +19,10 @@ trait MemoizeTrait
     private $memoizeCache;
 
     /**
-     * Set the cache object.
-     *
-     * @param \Psr\SimpleCache\CacheInterface $cache
-     *   The cache object.
-     */
-    public function setMemoizeCacheProvider(CacheInterface $cache): void
-    {
-        $this->memoizeCache = $cache;
-    }
-
-    /**
      * Get the cache object.
      *
      * @return \Psr\SimpleCache\CacheInterface
-     *   The cache object.
+     *   The cache object
      */
     public function getMemoizeCacheProvider(): CacheInterface
     {
@@ -44,17 +33,28 @@ trait MemoizeTrait
      * Memoize a callable or a closure.
      *
      * @param callable $callable
-     *   The callable or the closure.
+     *   The callable or the closure
      * @param array $parameters
-     *   The parameters of the callable.
-     * @param int|\DateInterval|null $ttl
-     *   The time to live of the value.
+     *   The parameters of the callable
+     * @param null|\DateInterval|int $ttl
+     *   The time to live of the value
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function memoize(callable $callable, array $parameters = [], $ttl = null)
     {
         return (new Memoizer($this->getMemoizeCacheProvider()))
             ->memoize($callable, $parameters, $ttl);
+    }
+
+    /**
+     * Set the cache object.
+     *
+     * @param \Psr\SimpleCache\CacheInterface $cache
+     *   The cache object
+     */
+    public function setMemoizeCacheProvider(CacheInterface $cache): void
+    {
+        $this->memoizeCache = $cache;
     }
 }

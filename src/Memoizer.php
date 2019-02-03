@@ -19,6 +19,18 @@ class Memoizer extends AbstractCacheMemoize implements CallableAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function __invoke()
+    {
+        return $this->memoize(
+            $this->getCallable(),
+            \func_get_args(),
+            $this->getTtl()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCallable(): callable
     {
         return $this->callable;
@@ -32,17 +44,5 @@ class Memoizer extends AbstractCacheMemoize implements CallableAwareInterface
         $this->callable = $callable;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
-    {
-        return $this->memoize(
-            $this->getCallable(),
-            \func_get_args(),
-            $this->getTtl()
-        );
     }
 }
