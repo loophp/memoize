@@ -1,47 +1,20 @@
+imports:
+  - { resource: vendor/drupol/php-conventions/config/php71/grumphp.yml }
+
 parameters:
-  git_dir: .
-  bin_dir: vendor/bin
-  tasks:
-    phplint: ~
-    composer: ~
-    phpcpd:
-      directory: './src'
-    phpstan:
-      autoload_file: ~
-      configuration: ~
-      level: 7
-      force_patterns: []
-      ignore_patterns: ['/spec/', '/benchmarks/']
-      triggered_by: ['php']
-    phpcsfixer:
-      config_file: ~
-      config: ~
-      fixers: []
-      level: ~
-      verbose: true
-    phpcs:
-      standard: PSR2
-      ignore_patterns:
-        - vendor/
-        - spec/
-      triggered_by:
-        - php
-    phpspec:
-      format: pretty
-      stop_on_failure: true
-      verbose: true
-    securitychecker:
-      lockfile: ./composer.lock
-      format: ~
-      end_point: ~
-      timeout: ~
-      run_always: false
-    composer_require_checker:
-      composer_file: 'composer.json'
-      config_file: ~
-      ignore_parse_errors: false
-      triggered_by: ['composer.json', 'composer.lock', '*.php']
-    infection:
-      threads: 10
-      min_msi: 40
-      min_covered_msi: 40
+    tasks.phpcsfixer2.config: resources/phpcsfixer.config.php
+
+    extra_tasks:
+        phpspec:
+            verbose: true
+            metadata:
+                priority: 3000
+        infection:
+            threads: 10
+            test_framework: phpspec
+            configuration: infection.json.dist
+            min_msi: 40
+            min_covered_msi: 40
+            metadata:
+                priority: 2000
+

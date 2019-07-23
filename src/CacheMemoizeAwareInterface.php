@@ -51,7 +51,7 @@ interface CacheMemoizeAwareInterface extends ExecuteCallableAwareInterface
      * @return \drupol\memoize\CacheMemoizeAwareInterface
      *   The cache memoize object
      */
-    public function setMemoizeCacheProvider(CacheInterface $cache): CacheMemoizeAwareInterface;
+    public function setMemoizeCacheProvider(CacheInterface $cache): self;
 
     /**
      * Set the cache time to live.
@@ -62,5 +62,5 @@ interface CacheMemoizeAwareInterface extends ExecuteCallableAwareInterface
      * @return \drupol\memoize\CacheMemoizeAwareInterface
      *   The cache memoize object
      */
-    public function setTtl($ttl): CacheMemoizeAwareInterface;
+    public function setTtl($ttl): self;
 }

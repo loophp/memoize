@@ -1,35 +1,33 @@
 {
     "name": "drupol/memoize",
     "description": "Memoize functions with a trait or by extending an object.",
-    "license": "MIT",
+    "keywords": [
+        "memoize",
+        "memoization",
+        "memoizer",
+        "cache"
+    ],
     "homepage": "https://github.com/drupol/memoize",
-    "keywords": ["memoize", "memoization", "memoizer", "cache"],
-    "support": {
-        "source": "https://github.com/drupol/memoize",
-        "forum": "https://github.com/drupol/memoize/issues",
-        "irc": "irc://irc.freenode.org/php"
-    },
-    "authors": [{
-        "name": "Pol Dellaiera",
-        "email": "pol.dellaiera@protonmail.com",
-        "homepage": "https://not-a-number.io",
-        "role": "Author"
-    }],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pol Dellaiera",
+            "email": "pol.dellaiera@protonmail.com",
+            "homepage": "https://not-a-number.io",
+            "role": "Author"
+        }
+    ],
     "require": {
         "php": ">= 7.1",
         "drupol/valuewrapper": "^1",
         "psr/simple-cache": "^1.0"
     },
-    "autoload": {
-        "psr-4": {
-            "drupol\\memoize\\": "src/"
-        }
-    },
     "require-dev": {
-        "symfony/cache": "^3 || ^4",
-        "apigen/apigen": "dev-master",
-        "roave/better-reflection": "dev-master",
-        "drupol/php-conventions": "^1"
+        "drupol/php-conventions": "^1",
+        "drupol/phpspec-code-coverage": "^4 || ^5",
+        "infection/infection": "^0.13.4",
+        "phpspec/phpspec": "^4 || ^5",
+        "symfony/cache": "^3 || ^4"
     },
     "suggest": {
         "symfony/cache": "drupol/memoize requires this package to get it working."
@@ -37,19 +35,24 @@
     "config": {
         "sort-packages": true
     },
+    "autoload": {
+        "psr-4": {
+            "drupol\\memoize\\": "src/"
+        }
+    },
     "scripts": {
         "apigen": "./vendor/bin/apigen generate src --destination build/docs",
-        "phpspec": "./vendor/bin/phpspec run",
+        "bench": "./vendor/bin/phpbench run --report=project --store --precision=3",
         "grumphp": "./vendor/bin/grumphp run",
-        "phpcs": "./vendor/bin/phpcs --ignore=vendor .",
-        "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
         "infection": "./vendor/bin/infection run -j 10",
-        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml",
-        "bench": "./vendor/bin/phpbench run --report=project --store --precision=3"
+        "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
+        "phpcs": "./vendor/bin/phpcs --ignore=vendor .",
+        "phpspec": "./vendor/bin/phpspec run",
+        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
     },
-    "extra": {
-        "grumphp": {
-            "config-default-path": "vendor/drupol/php-conventions/config/php7/grumphp.yml"
-        }
+    "support": {
+        "forum": "https://github.com/drupol/memoize/issues",
+        "irc": "irc://irc.freenode.org/php",
+        "source": "https://github.com/drupol/memoize"
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class MemoizerSpec extends ObjectBehavior
 {
-    public function it_can_get_and_set_the_cache()
+    public function it_can_get_and_set_the_cache(): void
     {
         $this
             ->getMemoizeCacheProvider()
@@ -29,7 +29,7 @@ class MemoizerSpec extends ObjectBehavior
             ->shouldEqual($cache);
     }
 
-    public function it_can_get_set_a_callable()
+    public function it_can_get_set_a_callable(): void
     {
         $this
             ->setCallable('\uniqid');
@@ -39,7 +39,7 @@ class MemoizerSpec extends ObjectBehavior
             ->shouldReturn('\uniqid');
 
         $closure = function () {
-            return \uniqid();
+            return uniqid();
         };
 
         $this
@@ -50,7 +50,7 @@ class MemoizerSpec extends ObjectBehavior
             ->shouldReturn($closure);
     }
 
-    public function it_can_memoize_a_callable()
+    public function it_can_memoize_a_callable(): void
     {
         $callable = '\uniqid';
 
@@ -76,15 +76,15 @@ class MemoizerSpec extends ObjectBehavior
         $this('1')->shouldNotBe($this('2'));
     }
 
-    public function it_can_memoize_a_closure()
+    public function it_can_memoize_a_closure(): void
     {
         $closure = function () {
-            return \uniqid();
+            return uniqid();
         };
 
         $this->setCallable($closure);
 
-        $args = [new \StdClass(), [\uniqid()], \uniqid()];
+        $args = [new \StdClass(), [uniqid()], uniqid()];
 
         $this()->shouldBe($this());
         $this(1)->shouldBe($this(1));
@@ -112,7 +112,7 @@ class MemoizerSpec extends ObjectBehavior
         $this($args)->shouldNotBe($this());
     }
 
-    public function it_can_memoize_with_a_different_ttl()
+    public function it_can_memoize_with_a_different_ttl(): void
     {
         $callable = '\uniqid';
 
@@ -126,7 +126,7 @@ class MemoizerSpec extends ObjectBehavior
             );
     }
 
-    public function it_get_and_set_the_ttl()
+    public function it_get_and_set_the_ttl(): void
     {
         $this
             ->getTtl()
@@ -140,12 +140,12 @@ class MemoizerSpec extends ObjectBehavior
             ->shouldReturn(10);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Memoizer::class);
     }
 
-    public function let()
+    public function let(): void
     {
         $cache = new FilesystemCache();
 

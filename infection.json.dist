@@ -3,16 +3,13 @@
     "source": {
         "directories": [
             "src"
-        ],
-        "excludes": [
-            "MemoizeTrait.php"
         ]
     },
     "logs": {
-        "text": "infection.log",
-        "summary": "summary.log",
-        "debug": "debug.log",
-        "perMutator": "per-mutator.md",
+        "text": "build/infection.log",
+        "summary": "build/summary.log",
+        "debug": "build/debug.log",
+        "perMutator": "build/per-mutator.md",
         "badge": {
             "branch": "master"
         }
