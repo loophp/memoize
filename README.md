@@ -1,32 +1,33 @@
-[![Build Status](https://www.travis-ci.org/drupol/memoize.svg?branch=master)](https://www.travis-ci.org/drupol/memoize)
- [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/memoize/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
+[![Latest Stable Version](https://img.shields.io/packagist/v/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
+ [![GitHub stars](https://img.shields.io/github/stars/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
+ [![Total Downloads](https://img.shields.io/packagist/dt/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
+ [![Build Status](https://img.shields.io/travis/drupol/memoize/master.svg?style=flat-square)](https://travis-ci.org/drupol/memoize)
+ [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
+ [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
  [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/drupol/memoize/master)](https://stryker-mutator.github.io)
- [![Code Coverage](https://scrutinizer-ci.com/g/drupol/memoize/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
- [![StyleCI](https://styleci.io/repos/104074893/shield?branch=master)](https://styleci.io/repos/104074893)
- [![Latest Stable Version](https://poser.pugx.org/drupol/memoize/v/stable)](https://packagist.org/packages/drupol/memoize)
- [![Total Downloads](https://poser.pugx.org/drupol/memoize/downloads)](https://packagist.org/packages/drupol/memoize)
- [![License](https://poser.pugx.org/drupol/memoize/license)](https://packagist.org/packages/drupol/memoize)
-
-# Memoize
+ [![License](https://img.shields.io/packagist/l/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
+ [![Say Thanks!](https://img.shields.io/badge/Say-thanks-brightgreen.svg?style=flat-square)](https://saythanks.io/to/drupol)
+ [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
+ 
+# PHP Memoize
 
 ## Description
 
-Memoize functions or methods.
+Memoize functions.
 
 From wikipedia: 
 > In computing, memoization is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 
 This library help you to memoize callable or closures.
 
-It can use any type of Cache backend system, as long as it implements [the standard PSR-16 CacheInterface interface](https://www.php-fig.org/psr/psr-16).
+It can use any type of Cache backend system, as long as it implements [the PSR-6 cache interface](https://www.php-fig.org/psr/psr-16).
 
 If you use the [symfony/cache](https://packagist.org/packages/symfony/cache) package, you will have a bunch of cache backends available such as Redis, MemCache, Filesystem, ArrayCache,...
 
 ## Features
 
-* Provides a Trait,
-* Provides a Memoizer,
-* Allows you to set a Cache backend provider (PSR-16 compliant only),
+* Provides a Memoizer class,
+* Allows you to set a Cache backend provider (PSR-6 compliant only),
 * Allows you to set a "TTL" (time to live).
 
 ## Installation
@@ -39,71 +40,48 @@ You will need to provide a Cache object to the library in order to get it workin
 
 `composer require symfony/cache`
 
-The tests are using `symfony/cache` but you are free to use any other library implementing the standard PSR-16 CacheInterface.
+The tests are using `symfony/cache` but you are free to use any other library implementing [the PSR-6 cache interface](https://www.php-fig.org/psr/psr-6/).
 
 ## Usage
 
-Using the **trait**:
-
 ```php
-include 'vendor/autoload.php';
+<?php
 
-use drupol\memoize\MemoizeTrait;
-use Symfony\Component\Cache\Simple\ArrayCache;
+declare(strict_types=1);
 
-class myObject {
-    use MemoizeTrait;
-}
-
-$myObject = new myObject();
-$cache = new ArrayCache();
-
-$myObject->setMemoizeCacheProvider($cache);
-
-$closure = function($second = 5) {
-    sleep($second);
-    return uniqid();
-};
-
-echo $myObject->memoize($closure, [1]) . "\n"; // 59c41136b38e9
-echo $myObject->memoize($closure, [1]) . "\n"; // 59c41136b38e9
-echo $myObject->memoize($closure, [2]) . "\n"; // 59c41138c4765
-echo $myObject->memoize($closure, [2]) . "\n"; // 59c41138c4765
-```
-
-Using the **Memoizer class**:
-
-```php
 include 'vendor/autoload.php';
 
 use drupol\memoize\Memoizer;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$closure = function($second = 5) {
-    return uniqid();
+$callback = function ($a = 5, $b = 10) {
+    sleep(5);
+
+    return \sprintf('Param 1: %s  Param 2: %s%s', $a, $b, \PHP_EOL);
 };
 
-$cache = new FilesystemCache();
+$cache = new FilesystemAdapter();
 
-$memoizer = (new Memoizer($cache))
-    ->setCallable($closure);
+$memoizer = new Memoizer($callback, 'unique ID', $cache);
 
-
-echo $memoizer(1) . "\n"; // 59c4123661459
-echo $memoizer(1) . "\n"; // 59c4123661459
-echo $memoizer(2) . "\n"; // 59c4123862a4e
-echo $memoizer(2) . "\n"; // 59c4123862a4e
+echo $memoizer('A', 'B') . "\n";
+echo $memoizer('C', 'D') . "\n";
+echo $memoizer('A', 'B') . "\n";
+echo $memoizer('C', 'D') . "\n";
 ```
 
-## API
+## Code style, code quality, tests and benchmarks
 
-Find the complete API documentation at [https://not-a-number.io/memoize](https://not-a-number.io/memoize).
+The code style is following [PSR-12](https://www.php-fig.org/psr/psr-12/) plus a set of custom rules, the package [drupol/php-conventions](https://github.com/drupol/php-conventions)
+is responsible for this.
+
+Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/memoize/builds) run the tests and the benchmarks.
+
+The library has tests written with [PHPSpec](http://www.phpspec.net/).
+Feel free to check them out in the `spec` directory. Run `composer phpspec` to trigger the tests.
+
+[PHPInfection](https://github.com/infection/infection) is used to ensure that your code is properly tested, run `composer infection` to test your code.
 
 ## Contributing
 
-Feel free to contribute to this library by sending Github pull requests. I'm quite reactive :-)
-
-## Sponsors
-
-* [ARhS Development](https://www.arhs-group.com)
-* [European Commission - DIGIT](https://github.com/ec-europa)
+See the file [CONTRIBUTING.md](.github/CONTRIBUTING.md) but feel free to contribute to this library by sending Github pull requests.

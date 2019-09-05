@@ -1,6 +1,6 @@
 {
     "name": "drupol/memoize",
-    "description": "Memoize functions with a trait or by extending an object.",
+    "description": "Memoize a callable.",
     "keywords": [
         "memoize",
         "memoization",
@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">= 7.1",
-        "drupol/valuewrapper": "^1",
+        "ext-json": "*",
         "psr/cache": "^1.0"
     },
     "require-dev": {
@@ -30,7 +30,8 @@
         "symfony/cache": "^4.3"
     },
     "suggest": {
-        "symfony/cache": "drupol/memoize requires this package to get it working."
+        "drupol/valuewrapper": "Generates unique IDs for your closures.",
+        "symfony/cache": "Recommended cache provider."
     },
     "config": {
         "sort-packages": true
