@@ -1,5 +1,0 @@
-parameters:
-    visibility_levels: [public, protected, private]
-    title: "drupol/memoize API documentation"
-    base_url: "https://not-a-number.io/memoize"
-    overwrite: false
