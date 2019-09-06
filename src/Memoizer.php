@@ -132,7 +132,7 @@ final class Memoizer implements MemoizerInterface
 
         $this->cache->save(
             $cache
-                ->expiresAfter($ttl ?? $this->getTtl())
+                ->expiresAfter($ttl)
                 ->set($result)
         );
 
