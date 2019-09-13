@@ -88,15 +88,12 @@ final class Memoizer implements MemoizerInterface
      */
     private function execute(array $parameters = null)
     {
-        $callable = $this->callable;
-
-        if ($callable instanceof \Closure) {
-            $callable = $callable->bindTo($this, static::class);
-        }
+        $closure = \Closure::fromCallable($this->callable)
+            ->bindTo($this, static::class);
 
         return null === $parameters ?
-            $callable() :
-            $callable(...$parameters);
+            $closure() :
+            $closure(...$parameters);
     }
 
     /**
