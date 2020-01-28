@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace drupol\memoize;
 
+use ArrayAccess;
 use drupol\memoize\Contract\Memoizer as MemoizerInterface;
-use Psr\Cache\CacheItemPoolInterface;
+use Exception;
 
 /**
  * Class Memoizer.
@@ -13,9 +14,9 @@ use Psr\Cache\CacheItemPoolInterface;
 final class Memoizer implements MemoizerInterface
 {
     /**
-     * The cache object.
+     * The cache.
      *
-     * @var CacheItemPoolInterface
+     * @var array<string, mixed>|ArrayAccess<string, mixed>
      */
     private $cache;
 
@@ -27,112 +28,53 @@ final class Memoizer implements MemoizerInterface
     private $callable;
 
     /**
+     * The ID associated to the callable to memoize.
+     *
      * @var string
      */
     private $callableId;
-
-    /**
-     * The cache time to live.
-     *
-     * @var null|\DateInterval|int
-     */
-    private $ttl;
 
     /**
      * Memoizer constructor.
      *
      * @param callable $callable
      * @param string $callableId
-     * @param \Psr\Cache\CacheItemPoolInterface $cache
-     * @param null $ttl
+     * @param ArrayAccess<string, mixed>|null $cache
      */
-    public function __construct(callable $callable, string $callableId, CacheItemPoolInterface $cache, $ttl = null)
-    {
-        $this->cache = $cache;
-        $this->ttl = $ttl;
+    public function __construct(
+        callable $callable,
+        string $callableId,
+        ?ArrayAccess $cache = null
+    ) {
+        $this->cache = $cache ?? [];
         $this->callable = $callable;
         $this->callableId = $callableId;
     }
 
-    public function __invoke()
-    {
-        return $this->memoize(\func_get_args(), $this->getTtl());
-    }
-
     /**
-     * {@inheritdoc}
-     */
-    public function getTtl()
-    {
-        return $this->ttl;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTtl($ttl): MemoizerInterface
-    {
-        $this->ttl = $ttl;
-
-        return $this;
-    }
-
-    /**
-     * Execute a callable.
+     * @param mixed ...$arguments
      *
-     * @param array $parameters
-     *   The callable's parameters
-     *
-     * @return null|mixed
-     *   The result of the callable
+     * @return mixed|null
      */
-    private function execute(array $parameters = null)
+    public function __invoke(...$arguments)
     {
-        $closure = \Closure::fromCallable($this->callable)
-            ->bindTo($this, static::class);
-
-        return null === $parameters ?
-            $closure() :
-            $closure(...$parameters);
-    }
-
-    /**
-     * @param array $parameters
-     * @param null|\DateInterval|int $ttl
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Exception
-     *
-     * @return null|mixed
-     */
-    private function memoize(array $parameters = null, $ttl = null)
-    {
-        $cacheId = \json_encode(
+        $cacheId = json_encode(
             [
                 $this->callableId,
-                $parameters,
-                $ttl,
+                $arguments,
             ]
         );
 
         if (false === $cacheId) {
-            throw new \Exception('Unable to generate a unique ID with your closure and arguments.');
+            throw new Exception('Unable to generate a unique ID from the given closure and arguments.');
         }
 
-        $cache = $this->cache->getItem(\sha1($cacheId));
+        $sha1 = sha1($cacheId);
 
-        if ($cache->isHit()) {
-            return $cache->get();
+        if (isset($this->cache[$sha1])) {
+            return $this->cache[$sha1];
         }
 
-        $result = $this->execute($parameters);
-
-        $this->cache->save(
-            $cache
-                ->expiresAfter($ttl)
-                ->set($result)
-        );
-
-        return $result;
+        return $this->cache[$sha1] = ($this->callable)($arguments);
     }
 }
