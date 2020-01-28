@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace spec\drupol\memoize;
 
+use drupol\memoize\Cache\ArrayAccessCacheItemPool;
 use drupol\memoize\Memoizer;
 use Exception;
 use PhpSpec\ObjectBehavior;
 use StdClass;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class MemoizerSpec extends ObjectBehavior
 {
     public function it_can_memoize_a_callable(): void
     {
-        $callback = static function () {
-            return uniqid();
+        $callback = static function (...$args) {
+            return implode('', ...$args);
         };
 
         $this->beConstructedWith($callback, uniqid());
@@ -72,5 +74,26 @@ class MemoizerSpec extends ObjectBehavior
         $this->beConstructedWith($callback, uniqid());
 
         $this->shouldHaveType(Memoizer::class);
+    }
+
+    public function it_works_with_a_custom_cache(): void
+    {
+        $cache = new ArrayAccessCacheItemPool(new ArrayAdapter());
+
+        $key = sha1(json_encode([]));
+
+        $cacheItem = $cache->getItem($key);
+        $cacheItem->set('bar');
+        $cache->save($cacheItem);
+
+        $callback = static function (...$arguments) {
+            return implode('', ...$arguments);
+        };
+
+        $this->beConstructedWith($callback, uniqid(), $cache);
+
+        $this->shouldHaveType(Memoizer::class);
+
+        $this('echo')->shouldReturn('echo');
     }
 }
