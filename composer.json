@@ -25,7 +25,8 @@
         "drupol/php-conventions": "^1.6.14",
         "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
         "infection/infection": "^0.13 || ^0.14 || ^0.15",
-        "phpspec/phpspec": "^5.1.2",
+        "phpspec/phpspec": "^5.1.2 || ^6.1.1",
+        "phpstan/phpstan-strict-rules": "^0.12",
         "symfony/cache": "^4 || ^5"
     },
     "suggest": {
