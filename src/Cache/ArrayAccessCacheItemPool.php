@@ -72,8 +72,11 @@ final class ArrayAccessCacheItemPool implements ArrayAccessCacheItemPoolInterfac
 
     /**
      * @param array<string> $keys
+     * @psalm-suppress ImplementedReturnTypeMismatch
+     * @psalm-suppress MixedReturnTypeCoercion
+     * @psalm-suppress InvalidReturnStatement
      *
-     * @return array<CacheItemInterface>|Traversable<CacheItemInterface>
+     * @return array<string, CacheItemInterface>|Traversable<string, CacheItemInterface>
      */
     public function getItems(array $keys = [])
     {
@@ -81,7 +84,11 @@ final class ArrayAccessCacheItemPool implements ArrayAccessCacheItemPoolInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @psalm-param string $key
+     *
+     * @param string $key
+     *
+     * @return bool
      */
     public function hasItem($key)
     {
@@ -89,44 +96,52 @@ final class ArrayAccessCacheItemPool implements ArrayAccessCacheItemPoolInterfac
     }
 
     /**
+     * @psalm-param int|string|mixed $offset
+     *
      * @param mixed $offset
      *
      * @return bool
      */
     public function offsetExists($offset)
     {
-        return $this->cache->hasItem($offset);
+        return $this->cache->hasItem((string) $offset);
     }
 
     /**
+     * @psalm-param int|string|mixed $offset
+     *
      * @param mixed $offset
      *
      * @return mixed
      */
     public function offsetGet($offset)
     {
-        return $this->cache->getItem($offset)->get();
+        return $this->cache->getItem((string) $offset)->get();
     }
 
     /**
+     * @psalm-param int|string|mixed $offset
+     *
      * @param mixed $offset
      * @param mixed $value
      *
-     * @return mixed
+     * @return void
      */
     public function offsetSet($offset, $value)
     {
-        return $this->cache->save(($this->cache->getItem($offset))->set($value));
+        $this->cache->save(($this->cache->getItem((string) $offset))->set($value));
     }
 
     /**
+     * @psalm-param int|string|mixed $offset
+     *
      * @param mixed $offset
      *
      * @return void
      */
     public function offsetUnset($offset)
     {
-        $this->cache->deleteItem($offset);
+        $this->cache->deleteItem((string) $offset);
     }
 
     /**

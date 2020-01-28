@@ -4,6 +4,7 @@
  [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/drupol/memoize/Continuous%20Integration?style=flat-square)](https://github.com/drupol/memoize/actions)
  [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
  [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
+ [![Type Coverage](https://shepherd.dev/github/drupol/memoize/coverage.svg)](https://shepherd.dev/github/drupol/memoize)
  [![License](https://img.shields.io/packagist/l/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
  [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
  

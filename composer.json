@@ -27,7 +27,8 @@
         "infection/infection": "^0.13 || ^0.14 || ^0.15",
         "phpspec/phpspec": "^5.1.2 || ^6.1.1",
         "phpstan/phpstan-strict-rules": "^0.12",
-        "symfony/cache": "^4 || ^5"
+        "symfony/cache": "^4 || ^5",
+        "vimeo/psalm": "^3.8"
     },
     "suggest": {
         "drupol/valuewrapper": "Generates unique IDs for your closures.",
