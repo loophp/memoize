@@ -1,0 +1,35 @@
+# https://github.com/probot/settings
+
+labels:
+    - name: bug
+      color: ee0701
+
+    - name: dependencies
+      color: 0366d6
+
+    - name: enhancement
+      color: 0e8a16
+
+    - name: question
+      color: cc317c
+
+    - name: security
+      color: ee0701
+
+    - name: stale
+      color: eeeeee
+
+repository:
+    allow_merge_commit: true
+    allow_rebase_merge: false
+    allow_squash_merge: true
+    default_branch: master
+    description: "Memoize a closure or a callable."
+    topics: memoize,php
+    has_downloads: true
+    has_issues: true
+    has_pages: false
+    has_projects: false
+    has_wiki: false
+    name: memoize
+    private: false

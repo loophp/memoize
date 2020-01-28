@@ -2,8 +2,6 @@ imports:
   - { resource: vendor/drupol/php-conventions/config/php71/grumphp.yml }
 
 parameters:
-    tasks.phpcsfixer2.config: resources/phpcsfixer.config.php
-
     extra_tasks:
         phpspec:
             verbose: true
