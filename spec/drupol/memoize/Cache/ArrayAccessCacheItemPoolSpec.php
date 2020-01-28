@@ -6,6 +6,7 @@ namespace spec\drupol\memoize\Cache;
 
 use drupol\memoize\Cache\ArrayAccessCacheItemPool;
 use PhpSpec\ObjectBehavior;
+use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class ArrayAccessCacheItemPoolSpec extends ObjectBehavior
@@ -40,5 +41,12 @@ class ArrayAccessCacheItemPoolSpec extends ObjectBehavior
             ->shouldReturn(
                 $cache->getItem('1')->get()
             );
+
+        $this->offsetExists(1)
+            ->shouldReturn(true);
+
+        $this
+            ->offsetGet(1)
+            ->shouldReturn('2');
     }
 }
