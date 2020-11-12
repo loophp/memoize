@@ -1,20 +1,21 @@
-[![Latest Stable Version](https://img.shields.io/packagist/v/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
- [![GitHub stars](https://img.shields.io/github/stars/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
- [![Total Downloads](https://img.shields.io/packagist/dt/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
- [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/drupol/memoize/Continuous%20Integration?style=flat-square)](https://github.com/drupol/memoize/actions)
- [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
- [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/memoize/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/memoize/?branch=master)
- [![Type Coverage](https://shepherd.dev/github/drupol/memoize/coverage.svg)](https://shepherd.dev/github/drupol/memoize)
- [![License](https://img.shields.io/packagist/l/drupol/memoize.svg?style=flat-square)](https://packagist.org/packages/drupol/memoize)
- [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
- 
+[![Latest Stable Version][latest stable version]][packagist]
+ [![GitHub stars][github stars]][packagist]
+ [![Total Downloads][total downloads]][packagist]
+ [![GitHub Workflow Status][github workflow status]][github actions]
+ [![Scrutinizer code quality][code quality]][code quality link]
+ [![Type Coverage][type coverage]][sheperd type coverage]
+ [![Code Coverage][code coverage]][code quality link]
+ [![License][license]][packagist]
+ [![Donate!][donate github]][github sponsor]
+ [![Donate!][donate paypal]][paypal sponsor]
+
 # PHP Memoize
 
 ## Description
 
 Memoizer class for callable.
 
-From wikipedia: 
+From wikipedia:
 > In computing, memoization is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 
 This library help you to memoize callable or closures.
@@ -52,50 +53,13 @@ $callback = function ($a = 5, $b = 10) {
     return \sprintf('Param 1: %s  Param 2: %s%s', $a, $b, \PHP_EOL);
 };
 
-$memoizer = new Memoizer($callback, 'unique ID');
+$memoizer = new Memoizer($callback, 'optional unique ID');
 
 echo $memoizer('A', 'B') . "\n";
 echo $memoizer('C', 'D') . "\n";
 echo $memoizer('A', 'B') . "\n";
 echo $memoizer('C', 'D') . "\n";
 ```
-
-By default, no cache object is provided and it uses simple PHP arrays.
-However, if you want to use a custom cache, the `ArrayAccessCacheItemPool` class is made for you.
-
-Do `composer require symfony/cache` or any other PSR-6 compliant library, then:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-include 'vendor/autoload.php';
-
-use drupol\memoize\Cache\ArrayAccessCacheItemPool;
-use drupol\memoize\Memoizer;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-
-// Decorate the FilesystemAdapter() cache.
-$cache = new ArrayAccessCacheItemPool(new FilesystemAdapter());
-
-$callback = function ($a = 5, $b = 10) {
-    sleep(5);
-
-    return \sprintf('Param 1: %s  Param 2: %s%s', $a, $b, \PHP_EOL);
-};
-
-$memoizer = new Memoizer($callback, 'unique ID', $cache);
-
-echo $memoizer('A', 'B') . "\n";
-echo $memoizer('C', 'D') . "\n";
-echo $memoizer('A', 'B') . "\n";
-echo $memoizer('C', 'D') . "\n";
-```
-
-The `ArrayAccessCacheItemPool` class is a decorator for [PSR-6 CacheItemPoolInterface](https://www.php-fig.org/psr/psr-6) objects.
-It implements at the same time the core [`ArrayAccess`](https://php.net/manual/en/class.arrayaccess.php) interface and `CacheItemPoolInterface` interface.
-Once decorated, your PSR-6 cache will behave just like a simple PHP array.
 
 ## Code style, code quality, tests and benchmarks
 
@@ -112,3 +76,39 @@ Feel free to check them out in the `spec` directory. Run `composer phpspec` to t
 ## Contributing
 
 See the file [CONTRIBUTING.md](.github/CONTRIBUTING.md) but feel free to contribute to this library by sending Github pull requests.
+
+[latest stable version]: https://img.shields.io/packagist/v/loophp/memoize.svg?style=flat-square
+[packagist]: https://packagist.org/packages/loophp/memoize
+
+[github stars]: https://img.shields.io/github/stars/loophp/memoize.svg?style=flat-square
+
+[total downloads]: https://img.shields.io/packagist/dt/loophp/memoize.svg?style=flat-square
+
+[github workflow status]: https://img.shields.io/github/workflow/status/loophp/memoize/Continuous%20Integration?style=flat-square
+[github actions]: https://github.com/loophp/memoize/actions
+
+[code quality]: https://img.shields.io/scrutinizer/quality/g/loophp/memoize/master.svg?style=flat-square
+[code quality link]: https://scrutinizer-ci.com/g/loophp/memoize/?branch=master
+
+[type coverage]: https://shepherd.dev/github/loophp/memoize/coverage.svg
+[sheperd type coverage]: https://shepherd.dev/github/loophp/memoize
+
+[code coverage]: https://img.shields.io/scrutinizer/coverage/g/loophp/memoize/master.svg?style=flat-square
+[code quality link]: https://img.shields.io/scrutinizer/quality/g/loophp/memoize/master.svg?style=flat-square
+
+[license]: https://img.shields.io/packagist/l/loophp/memoize.svg?style=flat-square
+
+[donate github]: https://img.shields.io/badge/Sponsor-Github-brightgreen.svg?style=flat-square
+[github sponsor]: https://github.com/sponsors/drupol
+
+[donate paypal]: https://img.shields.io/badge/Sponsor-Paypal-brightgreen.svg?style=flat-square
+[paypal sponsor]: https://www.paypal.me/drupol
+
+[phpspec]: http://www.phpspec.net/
+[grumphp]: https://github.com/phpro/grumphp
+[infection]: https://github.com/infection/infection
+[phpstan]: https://github.com/phpstan/phpstan
+[psalm]: https://github.com/vimeo/psalm
+[changelog-md]: https://github.com/loophp/memoize/blob/master/CHANGELOG.md
+[git-commits]: https://github.com/loophp/memoize/commits/master
+[changelog-releases]: https://github.com/loophp/memoize/releases
