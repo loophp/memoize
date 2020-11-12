@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace drupol\memoize\Contract;
+namespace loophp\memoize\Contract;
 
 use Closure;
 

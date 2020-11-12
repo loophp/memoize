@@ -1,5 +1,5 @@
 {
-    "name": "drupol/memoize",
+    "name": "loophp/memoize",
     "description": "Memoize a callable.",
     "keywords": [
         "memoize",
@@ -7,7 +7,7 @@
         "memoizer",
         "cache"
     ],
-    "homepage": "https://github.com/drupol/memoize",
+    "homepage": "https://github.com/loophp/memoize",
     "license": "MIT",
     "authors": [
         {
@@ -37,7 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "drupol\\memoize\\": "src/"
+            "loophp\\memoize\\": "src/"
         }
     },
     "scripts": {
@@ -51,8 +51,8 @@
         "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
     },
     "support": {
-        "forum": "https://github.com/drupol/memoize/issues",
+        "forum": "https://github.com/loophp/memoize/issues",
         "irc": "irc://irc.freenode.org/php",
-        "source": "https://github.com/drupol/memoize"
+        "source": "https://github.com/loophp/memoize"
     }
 }

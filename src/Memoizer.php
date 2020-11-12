@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace drupol\memoize;
+namespace loophp\memoize;
 
 use Closure;
-use drupol\memoize\Contract\Memoizer as MemoizerInterface;
+use loophp\memoize\Contract\Memoizer as MemoizerInterface;
 use Exception;
 use Opis\Closure\ReflectionClosure;
 

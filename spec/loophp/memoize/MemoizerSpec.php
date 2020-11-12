@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\drupol\memoize;
+namespace spec\loophp\memoize;
 
 use Closure;
 use Exception;

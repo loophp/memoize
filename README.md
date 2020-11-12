@@ -33,7 +33,7 @@ If you use the [symfony/cache](https://packagist.org/packages/symfony/cache) pac
 
 With composer:
 
-`composer require drupol/memoize`
+`composer require loophp/memoize`
 
 ## Usage
 
@@ -44,8 +44,7 @@ declare(strict_types=1);
 
 include 'vendor/autoload.php';
 
-use drupol\memoize\Memoizer;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use loophp\memoize\Memoizer;
 
 $callback = function ($a = 5, $b = 10) {
     sleep(5);
