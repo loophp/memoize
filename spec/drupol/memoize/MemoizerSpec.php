@@ -4,45 +4,48 @@ declare(strict_types=1);
 
 namespace spec\drupol\memoize;
 
-use drupol\memoize\Cache\ArrayAccessCacheItemPool;
-use drupol\memoize\Memoizer;
+use Closure;
 use Exception;
+use loophp\nanobench\BenchmarkFactory;
 use PhpSpec\ObjectBehavior;
-use StdClass;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class MemoizerSpec extends ObjectBehavior
 {
-    public function it_can_memoize_a_callable(): void
+    public function it_can_memoize_a_closure(): void
     {
         $callback = static function (...$args) {
             return implode('', ...$args);
         };
 
-        $this->beConstructedWith($callback, uniqid());
+        $this::fromClosure($callback)
+            ->shouldBeAnInstanceOf(Closure::class);
 
-        $this()->shouldBe($this());
-        $this('1')->shouldBe($this('1'));
-        $this('2')->shouldBe($this('2'));
-        $this('1')->shouldNotBe($this('2'));
+        $fibonacci = static function (int $number) use (&$fibonacci): int {
+            if (1 >= $number) {
+                return $number;
+            }
+
+            return $fibonacci($number - 1) + $fibonacci($number - 2);
+        };
+
+        $durationInSeconds = (new BenchmarkFactory())
+            ->fromClosure($fibonacci, 25)
+            ->run()
+            ->getDuration()
+            ->asSecond();
+
+        $this::fromClosure($fibonacci, 'fibonacci')(25);
+
+        $this::fromClosure($fibonacci, 'fibonacci')
+            ->shouldTakeLessThan($durationInSeconds)
+            ->during('__invoke', [25]);
     }
 
-    public function it_can_memoize_a_closure(): void
+    public function it_throws_an_error_when_it_is_unable_to_serialize(): void
     {
         $callback = static function () {
             return uniqid();
         };
-
-        $this->beConstructedWith($callback, uniqid());
-
-        $args = [new StdClass(), [uniqid()], uniqid()];
-
-        $this()->shouldBe($this());
-        $this(1)->shouldBe($this(1));
-        $this(1)->shouldBe($this(1));
-        $this(2)->shouldBe($this(2));
-        $this($args)->shouldBe($this($args));
-        $this($args)->shouldNotBe($this());
 
         $p = [
             'Valid ASCII' => 'a',
@@ -60,40 +63,8 @@ class MemoizerSpec extends ObjectBehavior
             'Valid 6 Octet Sequence (but not Unicode!)' => "\xfc\xa1\xa1\xa1\xa1\xa1",
         ];
 
-        $this
+        $this::fromClosure($callback)
             ->shouldThrow(Exception::class)
             ->during('__invoke', $p);
-    }
-
-    public function it_is_initializable(): void
-    {
-        $callback = static function () {
-            return uniqid();
-        };
-
-        $this->beConstructedWith($callback, uniqid());
-
-        $this->shouldHaveType(Memoizer::class);
-    }
-
-    public function it_works_with_a_custom_cache(): void
-    {
-        $cache = new ArrayAccessCacheItemPool(new ArrayAdapter());
-
-        $key = sha1(json_encode([]));
-
-        $cacheItem = $cache->getItem($key);
-        $cacheItem->set('bar');
-        $cache->save($cacheItem);
-
-        $callback = static function (...$arguments) {
-            return implode('', ...$arguments);
-        };
-
-        $this->beConstructedWith($callback, uniqid(), $cache);
-
-        $this->shouldHaveType(Memoizer::class);
-
-        $this('echo')->shouldReturn('echo');
     }
 }
