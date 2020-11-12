@@ -1,7 +1,9 @@
 formatter.name: pretty
 extensions:
+  loophp\phpspectime\Extension: ~
   FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
     format:
+      - html
       - clover
       - php
       - text

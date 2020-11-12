@@ -1,5 +1,4 @@
 vendor
-grumphp.yml
 composer.lock
 node_modules
 .idea/
@@ -14,6 +13,4 @@ test.php
 /summary.log
 /test_builder.php
 /debug.log
-phpspec.yml
 phpbench.json
-infection.json
