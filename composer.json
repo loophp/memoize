@@ -19,16 +19,16 @@
     ],
     "require": {
         "php": ">= 7.4",
-        "ext-json": "*",
-        "opis/closure": "^3.6"
+        "ext-json": "*"
     },
     "require-dev": {
         "amphp/amp": "^2.5",
         "drupol/php-conventions": "^2.0.2",
-        "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
-        "infection/infection": "^0.13 || ^0.14 || ^0.15",
+        "friends-of-phpspec/phpspec-code-coverage": "^5",
+        "infection/infection": "^0.20",
+        "infection/phpspec-adapter": "^0.1.1",
         "loophp/phpspec-time": "^1.1",
-        "phpspec/phpspec": "^5.1.2 || ^6.2.1",
+        "phpspec/phpspec": "^7",
         "phpstan/phpstan-strict-rules": "^0.12",
         "vimeo/psalm": "^4"
     },
