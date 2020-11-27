@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace spec\loophp\memoize;
 
+use ArrayObject;
 use Closure;
-use Exception;
+use Error;
 use loophp\nanobench\BenchmarkFactory;
 use PhpSpec\ObjectBehavior;
+use TypeError;
 
 class MemoizerSpec extends ObjectBehavior
 {
@@ -21,24 +23,57 @@ class MemoizerSpec extends ObjectBehavior
             ->shouldBeAnInstanceOf(Closure::class);
 
         $fibonacci = static function (int $number) use (&$fibonacci): int {
-            if (1 >= $number) {
-                return $number;
-            }
-
-            return $fibonacci($number - 1) + $fibonacci($number - 2);
+            return (1 >= $number) ?
+                $number :
+                $fibonacci($number - 1) + $fibonacci($number - 2);
         };
 
         $durationInSeconds = (new BenchmarkFactory())
-            ->fromClosure($fibonacci, 25)
+            ->fromClosure($fibonacci, 30)
             ->run()
             ->getDuration()
             ->asSecond();
 
-        $this::fromClosure($fibonacci, 'fibonacci')(25);
+        $test = $this::fromClosure($fibonacci);
 
-        $this::fromClosure($fibonacci, 'fibonacci')
+        $test(30);
+
+        $test
             ->shouldTakeLessThan($durationInSeconds)
-            ->during('__invoke', [25]);
+            ->during('__invoke', [30]);
+    }
+
+    public function it_can_memoize_a_closure_with_a_predefined_cache(): void
+    {
+        $cacheStorage = new ArrayObject();
+
+        $fibonacci = static function (int $number) use (&$fibonacci): int {
+            return (1 >= $number) ?
+                $number :
+                $fibonacci($number - 1) + $fibonacci($number - 2);
+        };
+
+        $test = $this::fromClosure($fibonacci, $cacheStorage);
+
+        $test(10);
+
+        if (false === $cacheStorage->offsetExists(sha1(json_encode([10])))) {
+            throw new Error('The cache hasn\'t been updated!');
+        }
+
+        $durationInSeconds = (new BenchmarkFactory())
+            ->fromClosure($fibonacci, 30)
+            ->run()
+            ->getDuration()
+            ->asSecond();
+
+        $test = $this::fromClosure($fibonacci, $cacheStorage);
+
+        $test(30);
+
+        $test
+            ->shouldTakeLessThan($durationInSeconds)
+            ->during('__invoke', [30]);
     }
 
     public function it_throws_an_error_when_it_is_unable_to_serialize(): void
@@ -64,7 +99,7 @@ class MemoizerSpec extends ObjectBehavior
         ];
 
         $this::fromClosure($callback)
-            ->shouldThrow(Exception::class)
+            ->shouldThrow(TypeError::class)
             ->during('__invoke', $p);
     }
 }

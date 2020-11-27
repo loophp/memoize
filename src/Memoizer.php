@@ -4,35 +4,16 @@ declare(strict_types=1);
 
 namespace loophp\memoize;
 
+use ArrayObject;
 use Closure;
 use loophp\memoize\Contract\Memoizer as MemoizerInterface;
-use Exception;
-use Opis\Closure\ReflectionClosure;
 
 final class Memoizer implements MemoizerInterface
 {
-    /**
-     * @var array<string, mixed>
-     */
-    private static array $cache = [];
-
-    public static function fromClosure(Closure $closure, ?string $id = null): Closure
+    public static function fromClosure(Closure $closure, ?ArrayObject $cache = null): Closure
     {
-        $cache = &self::$cache;
+        $cache = $cache ?? new ArrayObject();
 
-        return static function (...$arguments) use (&$cache, $closure, $id) {
-            $id ??= json_encode(
-                [
-                    (new ReflectionClosure($closure))->getCode(),
-                    $arguments,
-                ]
-            );
-
-            if (false === $id) {
-                throw new Exception('Unable to generate a unique ID from the given closure and arguments.');
-            }
-
-            return $cache[sha1($id)] ??= ($closure)(...$arguments);
-        };
+        return static fn (...$arguments) => $cache[sha1(json_encode($arguments))] ??= ($closure)(...$arguments);
     }
 }
