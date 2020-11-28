@@ -23,7 +23,7 @@ final class Memoizer implements MemoizerInterface
              * @return mixed
              */
             static fn (...$arguments) => $cache[
-                    sha1((false === $json = json_encode($arguments)) ? '' : $json)
+                    sha1(serialize(json_encode($arguments)))
                     ] ??= ($closure)(...$arguments);
     }
 }
