@@ -14,6 +14,16 @@ final class Memoizer implements MemoizerInterface
     {
         $cache = $cache ?? new ArrayObject();
 
-        return static fn (...$arguments) => $cache[sha1(json_encode($arguments))] ??= ($closure)(...$arguments);
+        return
+            /**
+             * @psalm-suppress MixedAssignment
+             *
+             * @param mixed ...$arguments
+             *
+             * @return mixed
+             */
+            static fn (...$arguments) => $cache[
+                    sha1((false === $json = json_encode($arguments)) ? '' : $json)
+                    ] ??= ($closure)(...$arguments);
     }
 }
