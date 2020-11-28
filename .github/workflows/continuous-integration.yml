@@ -51,7 +51,7 @@ jobs:
               run: vendor/bin/grumphp run
 
             - name: Send PSALM data
-              run: vendor/bin/psalm --shepherd --stats
+              run: vendor/bin/psalm --shepherd --stats src/
               continue-on-error: true
 
             - name: Send Scrutinizer data
