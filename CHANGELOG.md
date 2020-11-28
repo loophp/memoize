@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Commits
 
+- chore: Update static files before release. [`b3e345d`](https://github.com/loophp/memoize/commit/b3e345d92ed40d5e3607b719f457c95072cb59a5)
+- ci: Update Github actions configuration. [`f1af8c6`](https://github.com/loophp/memoize/commit/f1af8c670ca6f3d0178a4202d55f89ef56419dfc)
+- chore: Update static configuration files. [`76137e7`](https://github.com/loophp/memoize/commit/76137e7e408f9c66453472f5fae10aad9afa8d72)
+- refactor: Fix tests. [`239328c`](https://github.com/loophp/memoize/commit/239328cc506284188c689761c482e3a10f0f5d47)
+- refactor: Fix tests. [`3f9a3ce`](https://github.com/loophp/memoize/commit/3f9a3ce77a1dec1b42038e60b3fae700e0c33783)
+- refactor: Get rid of PHPStan issues. [`52fc1dc`](https://github.com/loophp/memoize/commit/52fc1dcca9773fa8a8288104a693c0ce168915b2)
+- docs: Update README. [`f499c14`](https://github.com/loophp/memoize/commit/f499c149f7c9991ab12660b96c21863b2574fd9e)
+- ci: Update Github actions configuration. [`90f92c6`](https://github.com/loophp/memoize/commit/90f92c67c822b2758a649e978a31c6a992c24903)
+- docs: Add changelog. [`87c5b49`](https://github.com/loophp/memoize/commit/87c5b49d21ed47c62f3dbc28916ef8a4da6d977e)
 - refactor: Add typing information. [`45961c3`](https://github.com/loophp/memoize/commit/45961c3fb5c9eb54ffe421ab5f7d0a7483111df8)
 - refactor: Optimizations and simplifications. [`47934ec`](https://github.com/loophp/memoize/commit/47934eca3f3c049a1482e8de70762a128ab5b576)
 - refactor: Update composer.json. [`1349126`](https://github.com/loophp/memoize/commit/134912686c5dfbe1865f30aa49fcb43c1378e059)
