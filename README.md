@@ -46,20 +46,29 @@ namespace App;
 
 include 'vendor/autoload.php';
 
+use Closure;
 use loophp\memoize\Memoizer;
 
-$callback = function ($a = 5, $b = 10) {
-    sleep(5);
-
-    return \sprintf('Param 1: %s  Param 2: %s%s', $a, $b, \PHP_EOL);
+$fibonacci = static function (int $number) use (&$fibonacci): int {
+    return (1 >= $number) ?
+        $number :
+        $fibonacci($number - 1) + $fibonacci($number - 2);
 };
 
-$memoizer = Memoizer::fromClosure($callback);
+$fibonacci = Memoizer::fromClosure($fibonacci);
 
-echo $memoizer('A', 'B') . "\n";
-echo $memoizer('C', 'D') . "\n";
-echo $memoizer('A', 'B') . "\n";
-echo $memoizer('C', 'D') . "\n";
+function bench(Closure $closure, ...$arguments): array
+{
+    $start = microtime(true);
+
+    return [
+        $closure(...$arguments),
+        microtime(true) - $start,
+    ];
+}
+
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
 ```
 
 ## Code style, code quality, tests and benchmarks

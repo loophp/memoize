@@ -24,8 +24,8 @@ repository:
     allow_rebase_merge: false
     allow_squash_merge: true
     default_branch: master
-    description: "Memoize a closure or a callable."
-    topics: memoize,php
+    description: "Memoize a closure."
+    topics: memoize, memoization, memoizer, cache, educational
     has_downloads: true
     has_issues: true
     has_pages: false

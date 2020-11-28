@@ -1,11 +1,12 @@
 {
     "name": "loophp/memoize",
-    "description": "Memoize a callable.",
+    "description": "Memoize a closure.",
     "keywords": [
         "memoize",
         "memoization",
         "memoizer",
-        "cache"
+        "cache",
+        "educational"
     ],
     "homepage": "https://github.com/loophp/memoize",
     "license": "MIT",
@@ -18,12 +19,10 @@
         }
     ],
     "require": {
-        "php": ">= 7.4",
-        "ext-json": "*"
+        "php": ">= 7.4"
     },
     "require-dev": {
-        "amphp/amp": "^2.5",
-        "drupol/php-conventions": "^2.0.2",
+        "drupol/php-conventions": "^2.0.3",
         "friends-of-phpspec/phpspec-code-coverage": "^5",
         "infection/infection": "^0.20",
         "infection/phpspec-adapter": "^0.1.1",
