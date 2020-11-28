@@ -42,6 +42,8 @@ With composer:
 
 declare(strict_types=1);
 
+namespace App;
+
 include 'vendor/autoload.php';
 
 use loophp\memoize\Memoizer;
@@ -52,7 +54,7 @@ $callback = function ($a = 5, $b = 10) {
     return \sprintf('Param 1: %s  Param 2: %s%s', $a, $b, \PHP_EOL);
 };
 
-$memoizer = new Memoizer($callback, 'optional unique ID');
+$memoizer = Memoizer::fromClosure($callback);
 
 echo $memoizer('A', 'B') . "\n";
 echo $memoizer('C', 'D') . "\n";
