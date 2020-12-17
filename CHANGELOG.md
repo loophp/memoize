@@ -5,10 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.0.0](https://github.com/loophp/memoize/compare/4.0.0...5.0.0)
+## [5.0.1](https://github.com/loophp/memoize/compare/5.0.0...5.0.1)
 
 ### Commits
 
+- ci: Update CI configuration. [`24302ca`](https://github.com/loophp/memoize/commit/24302cab52138b39387e73ae46af1583cc927061)
+- docs: Update README. [`abc771a`](https://github.com/loophp/memoize/commit/abc771aeebf2992ec769cec321f20d692e68a455)
+
+## [5.0.0](https://github.com/loophp/memoize/compare/4.0.0...5.0.0) - 2020-11-28
+
+### Commits
+
+- docs: Update changelog. [`bd28f5b`](https://github.com/loophp/memoize/commit/bd28f5b16a3ba4b70ba306f1920f681b9a0c9e6b)
 - chore: Update static files before release. [`b3e345d`](https://github.com/loophp/memoize/commit/b3e345d92ed40d5e3607b719f457c95072cb59a5)
 - ci: Update Github actions configuration. [`f1af8c6`](https://github.com/loophp/memoize/commit/f1af8c670ca6f3d0178a4202d55f89ef56419dfc)
 - chore: Update static configuration files. [`76137e7`](https://github.com/loophp/memoize/commit/76137e7e408f9c66453472f5fae10aad9afa8d72)
