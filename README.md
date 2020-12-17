@@ -20,14 +20,11 @@ From wikipedia:
 
 This library help you to memoize callable or closures.
 
-It can use any type of Cache backend system, as long as it implements [the PSR-6 cache interface](https://www.php-fig.org/psr/psr-6).
-
-If you use the [symfony/cache](https://packagist.org/packages/symfony/cache) package, you will have a bunch of cache backends available such as Redis, MemCache, Filesystem, ArrayCache,...
-
 ## Features
 
-* Provides a Memoizer class,
-* Allows you to set a custom cache,
+* Provides a Memoizer class.
+* Immutable.
+* Stateless.
 
 ## Installation
 
@@ -57,14 +54,11 @@ $fibonacci = static function (int $number) use (&$fibonacci): int {
 
 $fibonacci = Memoizer::fromClosure($fibonacci);
 
-function bench(Closure $closure, ...$arguments): array
+function bench(Closure $closure, ...$arguments): Generator
 {
-    $start = microtime(true);
-
-    return [
-        $closure(...$arguments),
-        microtime(true) - $start,
-    ];
+    yield microtime(true);
+    yield $closure(...$arguments),
+    yield microtime(true),
 }
 
 var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
