@@ -56,9 +56,9 @@ $fibonacci = Memoizer::fromClosure($fibonacci);
 
 function bench(Closure $closure, ...$arguments): Generator
 {
-    yield microtime(true);
-    yield $closure(...$arguments),
-    yield microtime(true),
+    $start = microtime(true);
+    yield $closure(...$arguments);
+    yield microtime(true) - $start;
 }
 
 var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
