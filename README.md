@@ -44,6 +44,7 @@ namespace App;
 include 'vendor/autoload.php';
 
 use Closure;
+use Generator;
 use loophp\memoize\Memoizer;
 
 $fibonacci = static function (int $number) use (&$fibonacci): int {
@@ -52,17 +53,34 @@ $fibonacci = static function (int $number) use (&$fibonacci): int {
         $fibonacci($number - 1) + $fibonacci($number - 2);
 };
 
-$fibonacci = Memoizer::fromClosure($fibonacci);
-
-function bench(Closure $closure, ...$arguments): Generator
+$sleep = static function (int $second): int
 {
-    $start = microtime(true);
-    yield $closure(...$arguments);
-    yield microtime(true) - $start;
+    sleep($second);
+
+    return $second;
+};
+
+$fibonacci = Memoizer::fromClosure($sleep);
+
+function bench(Closure $closure, ...$arguments): array
+{
+    $eval = static function(Closure $closure, ...$arguments): Generator
+        {
+            yield microtime(true);
+            yield $closure(...$arguments);
+            yield microtime(true);
+        };
+
+    $result = iterator_to_array($eval($closure, ...$arguments));
+
+    return [
+        $result[1],
+        $result[2] - $result[0],
+    ];
 }
 
-var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
-var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 50)));
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 10))); // ~10 seconds
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 10))); // ~3.9e-5
 ```
 
 ## Code style, code quality, tests and benchmarks
