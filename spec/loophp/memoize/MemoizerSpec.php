@@ -56,7 +56,7 @@ class MemoizerSpec extends ObjectBehavior
 
         $test(5);
 
-        if (false === $cacheStorage->offsetExists(sha1(serialize(json_encode([5]))))) {
+        if (false === $cacheStorage->offsetExists(sha1(serialize([5])))) {
             throw new Error('The cache hasn\'t been updated!');
         }
 
