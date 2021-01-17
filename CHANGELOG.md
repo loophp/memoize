@@ -5,10 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.0.1](https://github.com/loophp/memoize/compare/5.0.0...5.0.1)
+## [5.0.2](https://github.com/loophp/memoize/compare/5.0.1...5.0.2)
+
+### Merged
+
+- What's the reason for using `serialize()` and `json_encode()` to calculate the cache key? [`#4`](https://github.com/loophp/memoize/pull/4)
+- Use null coalescing assignment operator [`#5`](https://github.com/loophp/memoize/pull/5)
+- Fix code example in README [`#3`](https://github.com/loophp/memoize/pull/3)
 
 ### Commits
 
+- fix: Update README with proper example. [`53f58fa`](https://github.com/loophp/memoize/commit/53f58fa5a9d3827c17a13f1983062402fdfcade1)
+- fix: Update README code example. [`e56d672`](https://github.com/loophp/memoize/commit/e56d6724f9dc46e22be7e9bcb6c2d1792d894125)
+
+## [5.0.1](https://github.com/loophp/memoize/compare/5.0.0...5.0.1) - 2020-12-17
+
+### Commits
+
+- docs: Update changelog. [`3bcd96b`](https://github.com/loophp/memoize/commit/3bcd96b14ea7a1eb0ddc75d4660efe0efc42d6e2)
 - ci: Update CI configuration. [`24302ca`](https://github.com/loophp/memoize/commit/24302cab52138b39387e73ae46af1583cc927061)
 - docs: Update README. [`abc771a`](https://github.com/loophp/memoize/commit/abc771aeebf2992ec769cec321f20d692e68a455)
 
