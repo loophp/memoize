@@ -53,23 +53,20 @@ $fibonacci = static function (int $number) use (&$fibonacci): int {
         $fibonacci($number - 1) + $fibonacci($number - 2);
 };
 
-$sleep = static function (int $second): int
-{
-    sleep($second);
-
-    return $second;
+$fibonacciMemoized = static function (int $number) use (&$fibonacciMemoized): int {
+    return (1 >= $number) ?
+        $number :
+        $fibonacciMemoized($number - 1) + $fibonacciMemoized($number - 2);
 };
-
-$fibonacci = Memoizer::fromClosure($sleep);
+$fibonacciMemoized = Memoizer::fromClosure($fibonacciMemoized);
 
 function bench(Closure $closure, ...$arguments): array
 {
-    $eval = static function(Closure $closure, ...$arguments): Generator
-        {
-            yield microtime(true);
-            yield $closure(...$arguments);
-            yield microtime(true);
-        };
+    $eval = static function (Closure $closure, ...$arguments): Generator {
+        yield microtime(true);
+        yield $closure(...$arguments);
+        yield microtime(true);
+    };
 
     $result = iterator_to_array($eval($closure, ...$arguments));
 
@@ -79,8 +76,8 @@ function bench(Closure $closure, ...$arguments): array
     ];
 }
 
-var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 10))); // ~10 seconds
-var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 10))); // ~3.9e-5
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacci, 30))); // ~3 seconds
+var_dump(sprintf('[return: %s] [duration: %s]', ...bench($fibonacciMemoized, 30))); // ~0.0003 seconds
 ```
 
 ## Code style, code quality, tests and benchmarks
