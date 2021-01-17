@@ -12,7 +12,7 @@ final class Memoizer implements MemoizerInterface
 {
     public static function fromClosure(Closure $closure, ?ArrayObject $cache = null): Closure
     {
-        $cache = $cache ?? new ArrayObject();
+        $cache ??= new ArrayObject();
 
         return
             /**
