@@ -22,7 +22,7 @@
         "php": ">= 7.4"
     },
     "require-dev": {
-        "drupol/php-conventions": "^2.0.3",
+        "drupol/php-conventions": "^5.0.0",
         "friends-of-phpspec/phpspec-code-coverage": "^5",
         "infection/infection": "^0.20",
         "infection/phpspec-adapter": "^0.1.1",
