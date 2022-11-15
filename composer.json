@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "drupol/php-conventions": "^2.0.3",
-        "friends-of-phpspec/phpspec-code-coverage": "^5",
+        "friends-of-phpspec/phpspec-code-coverage": "^6",
         "infection/infection": "^0.20",
         "infection/phpspec-adapter": "^0.1.1",
         "loophp/phpspec-time": "^1.1",
