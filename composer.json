@@ -29,7 +29,7 @@
         "loophp/phpspec-time": "^1.1",
         "phpspec/phpspec": "^7",
         "phpstan/phpstan-strict-rules": "^1.0",
-        "vimeo/psalm": "^4"
+        "vimeo/psalm": "^5"
     },
     "config": {
         "sort-packages": true
